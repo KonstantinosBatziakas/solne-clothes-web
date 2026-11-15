@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="only light">
+<meta name="theme-color" content="#222222">
+<title>SOLNE | Streetwear from Greece</title>
+<meta name="description" content="Solne Clothes: streetwear created in Greece (Athens). Tees, jerseys and hoodies with graffiti and skull prints.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fff;--ink:#222;--mute:#767676;--line:#e6e6e6;--soft:#f4f4f4;--sun:#e8b923;--font:'Manrope',system-ui,-apple-system,'Segoe UI',Arial,sans-serif;color-scheme:light}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font:400 14px/1.6 var(--font);-webkit-font-smoothing:antialiased}
+img{display:block;width:100%;height:100%;object-fit:cover}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+ul{list-style:none;padding:0}
+:focus-visible{outline:2px solid var(--sun);outline-offset:3px}
+header{position:sticky;top:0;z-index:30;background:var(--bg);border-bottom:1px solid var(--line);display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:0 28px;height:68px}
+.nav{display:flex;gap:26px;height:100%;align-items:stretch}
+.nav>li{position:relative;display:flex;align-items:center}
+.nav a,.nav>li>button{font-weight:600;font-size:13px;letter-spacing:.06em;text-transform:uppercase}
+.nav>li:hover>a,.nav>li:hover>button{color:var(--mute)}
+.dd{position:absolute;top:100%;left:-16px;background:var(--bg);border:1px solid var(--line);min-width:200px;padding:10px 0;display:none}
+.nav>li:hover .dd,.nav>li:focus-within .dd{display:block}
+.dd button{display:block;width:100%;text-align:left;padding:8px 18px;font-size:13px;letter-spacing:.04em;text-transform:uppercase}
+.dd button:hover{background:var(--soft)}
+.logo{font-weight:800;font-size:28px;letter-spacing:.34em;padding-left:.34em}
+.logo{display:block}.logo img{width:auto;height:38px;object-fit:contain}
+.right{justify-self:end;display:flex;gap:20px;align-items:center;font-weight:600;font-size:13px;letter-spacing:.06em;text-transform:uppercase}
+.lang button{opacity:.45;padding:2px 3px}
+.lang button[aria-pressed="true"]{opacity:1;text-decoration:underline;text-underline-offset:4px}
+.burger{display:none;font-size:22px}
+/* slideshow */
+.show{position:relative;height:min(82vh,760px);background:var(--soft);overflow:hidden}
+.slide{position:absolute;inset:0;opacity:0;transition:opacity .8s;pointer-events:none}
+.slide.on{opacity:1;pointer-events:auto}
+.slide::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.5),transparent 45%)}
+.cap{position:absolute;z-index:2;left:50%;bottom:54px;transform:translateX(-50%);color:#fff;font-weight:800;font-size:clamp(22px,3.4vw,40px);letter-spacing:.12em;text-transform:uppercase;white-space:nowrap;border-bottom:2px solid #fff;padding-bottom:4px}
+.ctl{position:absolute;z-index:3;bottom:16px;left:50%;transform:translateX(-50%);display:flex;gap:14px;align-items:center;color:#fff;font-size:13px}
+.ctl button{color:#fff;padding:4px 10px;font-weight:600}
+.arr{position:absolute;z-index:3;top:50%;transform:translateY(-50%);color:#fff;font-size:34px;width:48px;height:64px}
+.arr.l{left:8px}.arr.r{right:8px}
+/* tiles */
+.wrap{padding:56px 28px}
+.sec-h{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:24px;gap:12px;flex-wrap:wrap}
+.sec-h h2{font-weight:800;font-size:22px;letter-spacing:.08em;text-transform:uppercase}
+.sec-h span{color:var(--mute)}
+.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.tile{position:relative;aspect-ratio:3/4;background:var(--soft);overflow:hidden;text-align:left;display:block;width:100%}
+.tile img{transition:transform .6s}
+.tile:hover img{transform:scale(1.04)}
+.tile::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.55),transparent 50%)}
+.tile div{position:absolute;z-index:2;left:18px;right:18px;bottom:16px;color:#fff}
+.tile b{display:block;font-weight:800;font-size:18px;letter-spacing:.08em;text-transform:uppercase}
+.tile small{display:block;font-size:12px;letter-spacing:.06em;text-transform:uppercase;opacity:.9}
+.tile u{font-size:12px;letter-spacing:.06em;text-transform:uppercase}
+/* products */
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:28px 16px}
+.card{text-align:left;width:100%}
+.ph{position:relative;aspect-ratio:4/5;background:var(--soft);overflow:hidden}
+.ph img{position:absolute;inset:0;transition:opacity .35s}
+.ph img+img{opacity:0}
+.card:hover .ph img+img{opacity:1}
+.tag{position:absolute;top:10px;left:10px;z-index:2;background:var(--bg);font-size:11px;font-weight:700;padding:3px 9px;letter-spacing:.06em;text-transform:uppercase}
+.card h3{font-weight:600;font-size:13px;letter-spacing:.05em;margin-top:12px;text-transform:uppercase}
+.card p{color:var(--mute)}
+.card small{color:var(--mute);font-size:12px}
+/* about */
+.story{display:grid;grid-template-columns:1fr;background:var(--soft)}
+.story article{padding:64px 48px;max-width:640px}
+.story h2{font-weight:800;font-size:30px;line-height:1.15;margin-bottom:16px}
+.story p{color:var(--mute);margin-bottom:12px}
+/* footer */
+footer{background:#222;color:#d9d9d9;padding:56px 28px calc(28px + env(safe-area-inset-bottom,0px))}
+.fcols{display:grid;grid-template-columns:repeat(4,1fr);gap:32px}
+footer h4{color:#fff;font-weight:800;font-size:13px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px}
+footer li{margin-bottom:6px}
+footer a:hover{color:#fff;text-decoration:underline}
+footer form{display:flex;margin-top:10px}
+footer input{flex:1;min-width:0;border:1px solid #666;background:transparent;color:#fff;padding:11px 12px;font:inherit}
+footer form button{background:#fff;color:#222;padding:0 18px;font-weight:700}
+.copy{margin-top:40px;padding-top:18px;border-top:1px solid #444;font-size:12px;color:#999}
+/* overlays */
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:40;display:none}
+.ov.open{display:block}
+.modal{position:fixed;z-index:41;inset:4vh 6vw;background:var(--bg);display:none;grid-template-columns:1.15fr 1fr;overflow:auto}
+.modal.open{display:grid}
+.gal{background:var(--soft);display:grid;grid-template-columns:1fr 1fr;gap:2px;align-content:start}
+.gal div{aspect-ratio:4/5}
+.gal div:first-child{grid-column:1/3;aspect-ratio:1/1}
+.info{padding:36px 34px;align-self:start}
+.info h2{font-weight:800;font-size:26px;line-height:1.15;letter-spacing:.04em;text-transform:uppercase}
+.info .pr{font-size:20px;margin:10px 0 18px}
+.info p{color:var(--mute);margin-bottom:18px}
+.sizes{display:flex;gap:8px;margin:8px 0 22px;flex-wrap:wrap}
+.sizes button{border:1px solid var(--line);min-width:48px;padding:10px 0;font-weight:600}
+.sizes button[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.add{width:100%;background:var(--ink);color:#fff;padding:16px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}
+.add:hover{background:var(--sun);color:#222}
+.x{position:absolute;top:10px;right:16px;z-index:3;font-size:30px;line-height:1;background:var(--bg);width:40px;height:40px;border-radius:50%}
+.drawer{position:fixed;z-index:42;top:0;right:0;bottom:0;width:min(400px,100vw);background:var(--bg);transform:translateX(100%);transition:transform .3s;display:flex;flex-direction:column;padding:22px}
+.drawer.open{transform:none}
+.drawer h2{font-weight:800;font-size:18px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px}
+.lines{flex:1;overflow:auto}
+.line{display:grid;grid-template-columns:64px 1fr auto;gap:12px;padding:12px 0;border-bottom:1px solid var(--line);align-items:center}
+.line .ph{aspect-ratio:4/5}
+.line small{color:var(--mute)}
+.line button{color:var(--mute);font-size:12px;text-decoration:underline}
+.tot{display:flex;justify-content:space-between;font-weight:700;padding:16px 0}
+.empty{color:var(--mute);padding:30px 0}
+.cookie{position:fixed;z-index:50;left:16px;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));max-width:520px;background:#222;color:#eee;padding:14px 16px;display:flex;gap:14px;align-items:center;font-size:13px}
+.cookie button{background:#fff;color:#222;padding:8px 16px;font-weight:700;white-space:nowrap}
+@media (max-width:900px){
+ header{padding:0 14px;height:60px;grid-template-columns:auto 1fr auto}
+ .burger{display:block}
+ .nav{display:none;position:absolute;top:60px;left:0;right:0;background:var(--bg);border-bottom:1px solid var(--line);flex-direction:column;gap:0;padding:8px 14px}
+ .nav.open{display:flex}
+ .nav>li{display:block;padding:8px 0}
+ .dd{position:static;display:block;border:0;padding:4px 0 0 10px}
+ .logo{justify-self:center}.logo img{height:30px}
+ .tiles,.grid{grid-template-columns:repeat(2,1fr)}
+ .story article{padding:40px 20px}
+ .fcols{grid-template-columns:1fr 1fr}
+ .wrap{padding:40px 14px}
+ .modal{grid-template-columns:1fr;inset:0}
+ .cap{font-size:20px;bottom:56px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<header>
+  <button class="burger" id="burger" aria-label="Menu" aria-expanded="false">&#9776;</button>
+  <ul class="nav" id="nav">
+    <li><a href="#shop" data-f="new" data-i="nNew"></a></li>
+    <li><button data-i="nShop"></button>
+      <div class="dd" id="dd"></div></li>
+    <li><a href="#about" data-i="nAbout"></a></li>
+    <li><a href="#contact" data-i="nContact"></a></li>
+  </ul>
+  <a class="logo" href="#top" id="top" aria-label="Solne"></a>
+  <div class="right">
+    <span class="lang"><button data-l="el" aria-pressed="true">EL</button>|<button data-l="en" aria-pressed="false">EN</button></span>
+    <button id="cartOpen"><span data-i="cart"></span> (<span id="cnt">0</span>)</button>
+  </div>
+</header>
+
+<div class="show" id="show" aria-roledescription="carousel"></div>
+
+<section class="wrap" id="cats">
+  <div class="sec-h"><h2 data-i="shopBy"></h2></div>
+  <div class="tiles" id="tiles"></div>
+</section>
+
+<section class="wrap" id="shop" style="padding-top:0">
+  <div class="sec-h"><h2 id="shopTitle"></h2><span id="num"></span></div>
+  <div class="grid" id="grid"></div>
+</section>
+
+<section class="story wrap" id="about">
+  <article>
+    <h2 data-i="aboutH"></h2>
+    <p data-i="about1"></p>
+    <p data-i="about2"></p>
+  </article>
+</section>
+
+<footer id="contact">
+  <div class="fcols">
+    <div><h4>Solne</h4><p data-i="fAddr"></p></div>
+    <div><h4 data-i="fTouch"></h4><ul><li><a href="#" data-i="fContact"></a></li><li><a href="#" data-i="fStore"></a></li></ul></div>
+    <div><h4 data-i="fInfo"></h4><ul><li><a href="#about" data-i="fAbout"></a></li><li><a href="#" data-i="fShip"></a></li><li><a href="#" data-i="fPay"></a></li><li><a href="#" data-i="fRet"></a></li><li><a href="#" data-i="fPriv"></a></li></ul></div>
+    <div><h4>Newsletter</h4><p data-i="nlTxt"></p>
+      <form id="nl"><input type="email" required id="nlIn"><button data-i="nlBtn"></button></form>
+      <h4 style="margin-top:22px" data-i="fFollow"></h4><ul><li><a href="#">Instagram</a></li><li><a href="#">TikTok</a></li></ul></div>
+  </div>
+  <div class="copy">&copy; 2026 Solne Clothes</div>
+</footer>
+
+<div class="ov" id="ov"></div>
+<div class="modal" id="modal" role="dialog" aria-modal="true"></div>
+<aside class="drawer" id="drawer" aria-label="Cart">
+  <h2 data-i="cart"></h2>
+  <div class="lines" id="lines"></div>
+  <div class="tot"><span data-i="total"></span><span id="total">0,00 €</span></div>
+  <button class="add" id="checkout" data-i="checkout"></button>
+  <button style="margin-top:12px;text-decoration:underline" id="cartClose" data-i="keep"></button>
+</aside>
+<div class="cookie" id="cookie"><span data-i="cookie"></span><button id="ck" data-i="ok"></button></div>
+
+<script>
+var SOLNE_NEWSLETTER_ENDPOINT = "https://solne-newsletter-api.ct25098.workers.dev/api/newsletter/subscribe";
+var T={
+ el:{nNew:"Νέα συλλογή",nShop:"Shop",nAbout:"Το brand",nContact:"Επικοινωνία",cart:"Καλάθι",shopBy:"Αγορές ανά κατηγορία",
+  all:"Όλα",tee:"T-shirt",jersey:"Jersey",hoodie:"Φούτερ",acc:"Αξεσουάρ",viewAll:"Προβολή όλων",items:"προϊόντα",
+  newDrop:"Νέα συλλογή",size:"Μέγεθος",add:"Προσθήκη στο καλάθι",total:"Σύνολο",checkout:"Ολοκλήρωση παραγγελίας",keep:"Συνέχεια αγορών",
+  empty:"Το καλάθι σου είναι άδειο.",remove:"Αφαίρεση",close:"Κλείσιμο",prev:"Προηγούμενη διαφάνεια",next:"Επόμενη διαφάνεια",pause:"Παύση",play:"Έναρξη",
+  aboutH:"Streetwear από την Ελλάδα",about1:"Το streetwear brand Solne δημιουργήθηκε στην Ελλάδα (Αθήνα). graffiti, κρανία και μηνύματα τυπωμένα μπροστά και πίσω, σε μικρές παραγωγές.",about2:"Κάθε κομμάτι έχει τη δική του ιστορία και διαβάζεται καλύτερα όταν το φοράς.",
+  fAddr:"Αθήνα, Ελλάδα",fTouch:"Επικοινωνία",fContact:"Επικοινωνήστε μαζί μας",fStore:"Τοποθεσία",fInfo:"Πληροφορίες",fAbout:"Η Εταιρία",fShip:"Πληροφορίες Αποστολής",fPay:"Πληροφορίες Πληρωμής",fRet:"Ανταλλαγές - Επιστροφές",fPriv:"Πολιτική απορρήτου - GDPR",
+  nlTxt:"Εγγραφείτε για τα τελευταία νέα και drops.",nlBtn:"Εγγραφή",nlPh:"Το email σου",nlOk:"Ευχαριστούμε, είσαι μέσα.",nlErr:"Κάτι πήγε στραβά. Δοκίμασε ξανά.",fFollow:"Ακολουθήστε μας",
+  cookie:"Χρησιμοποιώντας αυτόν τον ιστότοπο, αποδέχεστε ότι χρησιμοποιούμε cookies.",ok:"Κατάλαβα",
+  co:"Το checkout δεν έχει συνδεθεί ακόμα. Συνδέστε Stripe, Shopify ή φόρμα παραγγελίας."},
+ en:{nNew:"New drop",nShop:"Shop",nAbout:"About",nContact:"Contact",cart:"Cart",shopBy:"Shop by category",
+  all:"All",tee:"T-shirts",jersey:"Jerseys",hoodie:"Hoodies",acc:"Accessories",viewAll:"View all",items:"products",
+  newDrop:"New drop",size:"Size",add:"Add to cart",total:"Total",checkout:"Checkout",keep:"Continue shopping",
+  empty:"Your cart is empty.",remove:"Remove",close:"Close",prev:"Previous slide",next:"Next slide",pause:"Pause",play:"Play",
+  aboutH:"Streetwear from Greece",about1:"The streetwear brand Solne was created in Greece (Athens). Graffiti, skulls and messages printed front and back, in small runs.",about2:"Every piece has its own story, and it reads best when you wear it.",
+  fAddr:"Athens, Greece",fTouch:"Get in touch",fContact:"Contact us",fStore:"Location",fInfo:"Information",fAbout:"About us",fShip:"Shipping information",fPay:"Payment information",fRet:"Returns & exchanges",fPriv:"Privacy policy - GDPR",
+  nlTxt:"Sign up for the latest news and drops.",nlBtn:"Subscribe",nlPh:"Your email",nlOk:"Thank you, you are in.",nlErr:"Something went wrong. Please try again.",fFollow:"Follow us",
+  cookie:"By using this website you automatically accept that we use cookies.",ok:"Understood",
+  co:"Checkout is not connected yet. Connect Stripe, Shopify or an order form."}
+};
+var P=[
+ {n:"MEMENTO MORI TEE",c:"tee",pr:35,tag:["Νέο","New"],d:["Print memento mori μπροστά και πίσω. Βαρύ βαμβάκι, άνετη γραμμή.","Memento mori print front and back. Heavy cotton, relaxed fit."],
+  im:[["Memento Mori Tee closeup.png","1Qjiu-9JtTenDwEGRLlAgWZP7Bg8TUF9B"],["memento mori non closeup.PNG","1a1YgkCPKg_FgwfeRfBQ-OnX3nAdMmtP1"],["memento mori back print Tee closeup.JPG","1o7aWvE0ys33z9cHuQnY53INYVh2kqsvx"],["memento mori tee non closeup 2.PNG","1pUs6jNnBfR0VJ98nrX6HFwaIrvIlOzKR"]]},
+ {n:"WEAR THE SILENCE TEE",c:"tee",pr:35,d:["Το μήνυμα που δεν χρειάζεται φωνή. Καθαρό print, χαλαρή εφαρμογή.","The message that needs no voice. Clean print, relaxed fit."],
+  im:[["Wear The Silence Tee closeup.JPG","1SJMtZTqRPY6jcGW5lJ9do8B-xUW4mct2"],["Wear the silence non closeup.png","1ZeWJw7aeYbDCHUaC97IbDcgvtr3hMctg"]]},
+ {n:"SOLNE GRAFFITI TEE",c:"tee",pr:35,d:["graffiti lettering μπροστά και πίσω, φτιαγμένο για τον δρόμο.","Graffiti lettering front and back, made for the street."],
+  im:[["Solne graffiti front closeup.png","1ngdCHQW5CwUvuRgev_OLJOTUWGQKkTUp"],["solne graffiti front non closeup.png","1CAa7rmdZE1xpa4YCqQpXWOBprk_3O91x"],["Solne graffiti closeup back.JPG","1A2depgXXH5rlY1CTWCUUJ2Npld2uo-95"],["solne graffiti non closeup back.PNG","1E8bM2pNumah5GZgzjzcTLh-trhV0pKXJ"]]},
+ {n:"SKULL ZEBRA PRINT TEE",c:"tee",pr:38,tag:["Νέο","New"],d:["Κρανίο με zebra print μπροστά και πίσω.","Skull with zebra print front and back."],
+  im:[["Skull Zebra Print Solne Clothes closeup front.png","1WBQD6fJAqlSXQMtJjwQ5_7Dyl_JgrkX-"],["skull non closeup zebra print front.png","1nELG0fluEdCqrJBv519k__LYO8bqOFaT"],["Skull Zebra Print Back closeup.JPG","1l43t_ZB_IQliaVEayTT4nTuIqGbOpJaC"],["skull zebra graffiti non closeup back.PNG","1OuASu5Lpvj-6-Nh0Nx0em31qiZfxLn4x"]]},
+ {n:"Η ΠΟΛΗ ΤΩΝ ΠΑΓΩΜΕΝΩΝ ΟΝΕΙΡΩΝ TEE",c:"tee",pr:38,d:["Η πόλη των παγωμένων ονείρων σε print μπροστά και πίσω.","The city of frozen dreams, printed front and back."],
+  im:[["Η Πολη Των Παγωμενων Ονειρων Front Print closeup.png","1lVGZO4o_ZWAy57vNGJtiuvvkqnep-9GV"],["Η πολη των παγωμενων ονειρων print front non closeup.png","1aqWWIJZ2VaT5Pk-CGIQJ4CyNqt_pdFnV"],["Η Πόλη Των Παγωμένων Ονείρων Back Print closeup.JPG","1Q8yHpXCGr0ddcSODUCj2thSQbo4x8IbX"],["print back η πολη των παγωμενων ονειρων non closeup.png","1WHkzxF_-2LWd0uCIO_XkOZ_7f5YrHhDq"]]},
+ {n:"SOUL SOCIETY TEE",c:"tee",pr:35,d:["Soul Society, ένα από τα πρώτα σχέδια του brand.","Soul Society, one of the brand's first designs."],
+  im:[["Soul Society closeup.JPG","1p5Adp3e3eVq60p4s7NQYHznwGywNLl2N"]]},
+ {n:"SOLNE JERSEY",c:"jersey",pr:45,d:["Jersey με print μπροστά και πίσω. Αθλητική γραμμή, street στυλ.","Jersey with front and back print. Sporty cut, street style."],
+  im:[["Jersey Front Print.JPG","1FmyKe5kWlHY45O0Gi-3HwEQC5rmsJz"],["jeresy non closeup front.PNG","1lfo_teAMVAq0U-VkJfGHIgQqutLg03_m"],["Jersey Back Print.JPG","1DTeKvhX4SDAAGc3FvtrMO4OwScCDFpbO"],["jersey non closeup back.PNG","17T8_2s7oGRn2fxBN8Al0xxNJv7KDqmzI"]]},
+ {n:"SOLNE STREETWEAR HOODIE",c:"hoodie",pr:60,d:["Το hoodie της Solne με μπροστινό print. Ζεστό και βαρύ.","The Solne hoodie with front print. Warm and heavy."],
+  im:[["Solne Streetwear Hoodie Front closeup.JPG","13MXI7DoQSf2ZID7Xb_zjt8iDNCjTKBSP"]]},
+ {n:"THIRTYFOUR TRUCKER CAP",c:"acc",pr:25,one:1,d:["Trucker cap με το thirtyfour. Ρυθμιζόμενο μέγεθος.","Trucker cap with thirtyfour. Adjustable size."],
+  im:[["trucker cap thirtyfour without closeup just non pov.png","18GIsYgoWXrkq6wUZsFVEKe3rqDrLA1D8"]]}
+];
+var CATS=["tee","jersey","hoodie","acc"];
+var SL=[[3,"newDrop","new"],[2,null,"tee"],[4,null,"tee"]];
+var $=function(s){return document.querySelector(s)},$$=function(s){return document.querySelectorAll(s)};
+var L="el",filter="all",cart=[],si=0,timer=null,playing=true;
+try{var sv=localStorage.getItem("solne-lang");if(sv==="en"||sv==="el")L=sv}catch(e){}
+function t(k){return T[L][k]}
+function eur(v){return v.toFixed(2).replace(".",",")+" €"}
+function img(a,alt,lazy){var e=document.createElement("img");e.alt=alt;if(lazy)e.loading="lazy";e.src="images/"+encodeURIComponent(a[0]);
+ e.onerror=function(){e.onerror=null;e.src="https://drive.google.com/thumbnail?id="+a[1]+"&sz=w1600"};return e}
+function el(tag,cls,txt){var e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e}
+/* slideshow */
+function buildShow(){
+ var s=$("#show");s.innerHTML="";
+ SL.forEach(function(x,k){
+  var p=P[x[0]],d=el("div","slide"+(k===si?" on":""));
+  d.appendChild(img(p.im[0],p.n));
+  var a=el("a","cap",x[1]?t(x[1]):p.n);a.href="#shop";a.onclick=function(){setFilter(x[2]==="new"?"all":x[2])};
+  d.appendChild(a);s.appendChild(d)});
+ var l=el("button","arr l","‹");l.setAttribute("aria-label",t("prev"));l.onclick=function(){go(si-1)};
+ var r=el("button","arr r","›");r.setAttribute("aria-label",t("next"));r.onclick=function(){go(si+1)};
+ var c=el("div","ctl"),pb=el("button","",playing?t("pause"):t("play"));pb.onclick=function(){playing=!playing;pb.textContent=playing?t("pause"):t("play");run()};
+ c.appendChild(pb);s.appendChild(l);s.appendChild(r);s.appendChild(c)}
+function go(n){si=(n+SL.length)%SL.length;$$(".slide").forEach(function(d,k){d.classList.toggle("on",k===si)});run()}
+function run(){clearInterval(timer);if(playing&&!matchMedia("(prefers-reduced-motion:reduce)").matches)timer=setInterval(function(){go(si+1)},5500)}
+/* tiles + grid */
+function buildTiles(){
+ var w=$("#tiles");w.innerHTML="";
+ CATS.forEach(function(c){
+  var p=P.filter(function(x){return x.c===c})[0];if(!p)return;
+  var b=el("button","tile");b.appendChild(img(p.im[1]||p.im[0],p.n,true));
+  var d=el("div");d.appendChild(el("b","",t(c)));d.appendChild(el("u","",t("viewAll")));d.appendChild(el("small","",p.n));
+  b.appendChild(d);b.onclick=function(){setFilter(c);$("#shop").scrollIntoView()};w.appendChild(b)})}
+function buildGrid(){
+ var g=$("#grid");g.innerHTML="";var n=0;
+ P.forEach(function(p,i){
+  if(filter!=="all"&&p.c!==filter)return;n++;
+  var b=el("button","card"),ph=el("div","ph");
+  if(p.tag)ph.appendChild(el("span","tag",p.tag[L==="el"?0:1]));
+  ph.appendChild(img(p.im[0],p.n,true));if(p.im[1])ph.appendChild(img(p.im[1],p.n,true));
+  b.appendChild(ph);b.appendChild(el("h3","",p.n));b.appendChild(el("p","",eur(p.pr)));
+  b.appendChild(el("small","",p.one?"One size":"S M L XL"));
+  b.onclick=function(){openP(i)};g.appendChild(b)});
+ $("#shopTitle").textContent=t(filter);$("#num").textContent=n+" "+t("items")}
+function setFilter(f){filter=f;buildGrid();$("#nav").classList.remove("open")}
+function buildDD(){
+ var d=$("#dd");d.innerHTML="";
+ ["all"].concat(CATS).forEach(function(c){var b=el("button","",t(c));b.onclick=function(){setFilter(c);$("#shop").scrollIntoView()};d.appendChild(b)})}
+/* product modal */
+function openP(i){
+ var p=P[i],m=$("#modal"),sz=p.one?["One size"]:["S","M","L","XL"],pick=p.one?sz[0]:"M";
+ m.innerHTML="";
+ var x=el("button","x","×");x.setAttribute("aria-label",t("close"));x.onclick=closeAll;m.appendChild(x);
+ var gal=el("div","gal");p.im.forEach(function(a){var d=el("div");d.appendChild(img(a,p.n));gal.appendChild(d)});m.appendChild(gal);
+ var inf=el("div","info");inf.appendChild(el("h2","",p.n));inf.appendChild(el("div","pr",eur(p.pr)));inf.appendChild(el("p","",p.d[L==="el"?0:1]));
+ inf.appendChild(el("b","",t("size")));
+ var S=el("div","sizes");sz.forEach(function(s){var b=el("button","",s);b.setAttribute("aria-pressed",s===pick);
+  b.onclick=function(){pick=s;S.querySelectorAll("button").forEach(function(o){o.setAttribute("aria-pressed",o===b)})};S.appendChild(b)});
+ inf.appendChild(S);
+ var add=el("button","add",t("add"));add.onclick=function(){cart.push({i:i,s:pick});renderCart();closeAll();openCart()};
+ inf.appendChild(add);m.appendChild(inf);m.classList.add("open");$("#ov").classList.add("open");m.scrollTop=0}
+function renderCart(){
+ var Ls=$("#lines");Ls.innerHTML="";var tt=0;
+ if(!cart.length)Ls.appendChild(el("div","empty",t("empty")));
+ cart.forEach(function(c,k){var p=P[c.i];tt+=p.pr;
+  var r=el("div","line"),ph=el("div","ph");ph.appendChild(img(p.im[0],p.n));r.appendChild(ph);
+  var mid=el("div");mid.appendChild(el("b","",p.n));mid.appendChild(el("br"));mid.appendChild(el("small","",c.s+" · "+eur(p.pr)));r.appendChild(mid);
+  var rm=el("button","",t("remove"));rm.onclick=function(){cart.splice(k,1);renderCart()};r.appendChild(rm);Ls.appendChild(r)});
+ $("#total").textContent=eur(tt);$("#cnt").textContent=cart.length}
+function openCart(){$("#drawer").classList.add("open");$("#ov").classList.add("open")}
+function closeAll(){$("#modal").classList.remove("open");$("#drawer").classList.remove("open");$("#ov").classList.remove("open")}
+/* language */
+function setLang(l){L=l;try{localStorage.setItem("solne-lang",l)}catch(e){}
+ document.documentElement.lang=l;
+ $$("[data-i]").forEach(function(e){e.textContent=t(e.dataset.i)});
+ $$("[data-l]").forEach(function(b){b.setAttribute("aria-pressed",b.dataset.l===l)});
+ $("#nlIn").placeholder=t("nlPh");
+ buildShow();buildTiles();buildGrid();buildDD();renderCart();closeAll()}
+$$("[data-l]").forEach(function(b){b.onclick=function(){setLang(b.dataset.l)}});
+$$("[data-f]").forEach(function(a){a.onclick=function(){setFilter("all")}});
+$("#cartOpen").onclick=openCart;$("#cartClose").onclick=closeAll;$("#ov").onclick=closeAll;
+$("#checkout").onclick=function(){alert(t("co"))};
+$("#burger").onclick=function(){var n=$("#nav"),o=n.classList.toggle("open");this.setAttribute("aria-expanded",o)};
+$("#nl").onsubmit=function(e){e.preventDefault();
+ var f=this,inp=$("#nlIn"),btn=f.querySelector("button");
+ btn.disabled=true;btn.textContent="…";
+ fetch(SOLNE_NEWSLETTER_ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json"},
+  body:JSON.stringify({email:inp.value})})
+  .then(function(r){return r.json().then(function(j){return{ok:r.ok,j:j}})})
+  .then(function(r){
+   if(r.ok){f.innerHTML="";f.appendChild(el("p","",t("nlOk")))}
+   else{btn.disabled=false;btn.textContent=t("nlBtn");var m=el("p","",t("nlErr"));m.style.color="#e8b923";m.style.marginTop="8px";
+    f.appendChild(m);setTimeout(function(){m.remove()},4000)}
+  })
+  .catch(function(){btn.disabled=false;btn.textContent=t("nlBtn");var m=el("p","",t("nlErr"));m.style.color="#e8b923";m.style.marginTop="8px";
+   f.appendChild(m);setTimeout(function(){m.remove()},4000)})};
+$("#ck").onclick=function(){$("#cookie").remove();try{localStorage.setItem("solne-ck","1")}catch(e){}};
+try{if(localStorage.getItem("solne-ck"))$("#cookie").remove()}catch(e){}
+document.addEventListener("keydown",function(e){if(e.key==="Escape")closeAll()});
+$(".logo").appendChild(img(["solne logo.png","1MOzLW_eRr9GAfL5Rm8eDfReDw5_JepgA"],"Solne"));
+setLang(L);run();
+</script>
+</body>
+</html>
