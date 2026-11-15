@@ -81,11 +81,9 @@ footer{background:#222;color:#d9d9d9;padding:56px 28px calc(28px + env(safe-area
 footer h4{color:#fff;font-weight:800;font-size:13px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px}
 footer li{margin-bottom:6px}
 footer a:hover{color:#fff;text-decoration:underline}
-footer form{display:flex;margin-top:10px;gap:6px;flex-wrap:wrap}
-footer input{flex:1;min-width:160px;border:1px solid #666;background:transparent;color:#fff;padding:11px 12px;font:inherit}
-footer form button{background:#fff;color:#222;padding:0 18px;font-weight:700;min-height:44px}
-.nl-status{margin-top:8px;font-size:12px;color:#e8b923}
-.nl-status.err{color:#ff8a80}
+footer form{display:flex;margin-top:10px}
+footer input{flex:1;min-width:0;border:1px solid #666;background:transparent;color:#fff;padding:11px 12px;font:inherit}
+footer form button{background:#fff;color:#222;padding:0 18px;font-weight:700}
 .copy{margin-top:40px;padding-top:18px;border-top:1px solid #444;font-size:12px;color:#999}
 /* overlays */
 .ov{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:40;display:none}
@@ -174,15 +172,14 @@ footer form button{background:#fff;color:#222;padding:0 18px;font-weight:700;min
 
 <footer id="contact">
   <div class="fcols">
-    <div><h4>Solne</h4><p data-i="fAddr"></p><p style="margin-top:8px"><a href="mailto:codinginquires1@gmail.com">codinginquires1@gmail.com</a></p></div>
-    <div><h4 data-i="fTouch"></h4><ul><li><a href="mailto:codinginquires1@gmail.com" data-i="fContact"></a></li><li><a href="#contact" data-i="fStore"></a></li></ul></div>
+    <div><h4>Solne</h4><p data-i="fAddr"></p></div>
+    <div><h4 data-i="fTouch"></h4><ul><li><a href="#" data-i="fContact"></a></li><li><a href="#" data-i="fStore"></a></li></ul></div>
     <div><h4 data-i="fInfo"></h4><ul><li><a href="#about" data-i="fAbout"></a></li><li><a href="#" data-i="fShip"></a></li><li><a href="#" data-i="fPay"></a></li><li><a href="#" data-i="fRet"></a></li><li><a href="#" data-i="fPriv"></a></li></ul></div>
     <div><h4>Newsletter</h4><p data-i="nlTxt"></p>
       <form id="nl"><input type="email" required id="nlIn"><button data-i="nlBtn"></button></form>
-      <div class="nl-status" id="nlStatus" aria-live="polite"></div>
-      <h4 style="margin-top:22px" data-i="fFollow"></h4><ul><li><a href="https://instagram.com/dreams_dont_pay_rent" target="_blank" rel="noopener noreferrer">Instagram (@dreams_dont_pay_rent)</a></li></ul></div>
+      <h4 style="margin-top:22px" data-i="fFollow"></h4><ul><li><a href="#">Instagram</a></li><li><a href="#">TikTok</a></li></ul></div>
   </div>
-  <div class="copy">&copy; 2026 Solne Clothes — 334 Creations Studio</div>
+  <div class="copy">&copy; 2026 Solne Clothes</div>
 </footer>
 
 <div class="ov" id="ov"></div>
@@ -197,12 +194,7 @@ footer form button{background:#fff;color:#222;padding:0 18px;font-weight:700;min
 <div class="cookie" id="cookie"><span data-i="cookie"></span><button id="ck" data-i="ok"></button></div>
 
 <script>
-/* NEWSLETTER CONFIG (Supabase + Resend / Railway backend):
-   Set SOLNE_NEWSLETTER_ENDPOINT to your API endpoint (e.g. Railway / Supabase Edge Function).
-   When empty, subscriptions queue locally in localStorage ("solne-nl-queue") ready to sync. */
-var SOLNE_NEWSLETTER_ENDPOINT = "";
-var SOLNE_SENDER_EMAIL = "codinginquires1@gmail.com";
-
+var SOLNE_NEWSLETTER_ENDPOINT = "https://solne-newsletter-api.ct25098.workers.dev/api/newsletter/subscribe";
 var T={
  el:{nNew:"Νέα συλλογή",nShop:"Shop",nAbout:"Το brand",nContact:"Επικοινωνία",cart:"Καλάθι",shopBy:"Αγορές ανά κατηγορία",
   all:"Όλα",tee:"T-shirt",jersey:"Jersey",hoodie:"Φούτερ",acc:"Αξεσουάρ",viewAll:"Προβολή όλων",items:"προϊόντα",
@@ -210,7 +202,7 @@ var T={
   empty:"Το καλάθι σου είναι άδειο.",remove:"Αφαίρεση",close:"Κλείσιμο",prev:"Προηγούμενη διαφάνεια",next:"Επόμενη διαφάνεια",pause:"Παύση",play:"Έναρξη",
   aboutH:"Streetwear από την Ελλάδα",about1:"Το streetwear brand Solne δημιουργήθηκε στην Ελλάδα (Αθήνα). graffiti, κρανία και μηνύματα τυπωμένα μπροστά και πίσω, σε μικρές παραγωγές.",about2:"Κάθε κομμάτι έχει τη δική του ιστορία και διαβάζεται καλύτερα όταν το φοράς.",
   fAddr:"Αθήνα, Ελλάδα",fTouch:"Επικοινωνία",fContact:"Επικοινωνήστε μαζί μας",fStore:"Τοποθεσία",fInfo:"Πληροφορίες",fAbout:"Η Εταιρία",fShip:"Πληροφορίες Αποστολής",fPay:"Πληροφορίες Πληρωμής",fRet:"Ανταλλαγές - Επιστροφές",fPriv:"Πολιτική απορρήτου - GDPR",
-  nlTxt:"Εγγραφείτε για τα τελευταία νέα και drops.",nlBtn:"Εγγραφή",nlPh:"Το email σου",nlOk:"Ευχαριστούμε, είσαι μέσα.",nlDup:"Αυτό το email είναι ήδη εγγεγραμμένο.",nlErr:"Σφάλμα εγγραφής. Δοκίμασε ξανά.",fFollow:"Ακολουθήστε μας",
+  nlTxt:"Εγγραφείτε για τα τελευταία νέα και drops.",nlBtn:"Εγγραφή",nlPh:"Το email σου",nlOk:"Ευχαριστούμε, είσαι μέσα.",nlErr:"Κάτι πήγε στραβά. Δοκίμασε ξανά.",fFollow:"Ακολουθήστε μας",
   cookie:"Χρησιμοποιώντας αυτόν τον ιστότοπο, αποδέχεστε ότι χρησιμοποιούμε cookies.",ok:"Κατάλαβα",
   co:"Το checkout δεν έχει συνδεθεί ακόμα. Συνδέστε Stripe, Shopify ή φόρμα παραγγελίας."},
  en:{nNew:"New drop",nShop:"Shop",nAbout:"About",nContact:"Contact",cart:"Cart",shopBy:"Shop by category",
@@ -219,7 +211,7 @@ var T={
   empty:"Your cart is empty.",remove:"Remove",close:"Close",prev:"Previous slide",next:"Next slide",pause:"Pause",play:"Play",
   aboutH:"Streetwear from Greece",about1:"The streetwear brand Solne was created in Greece (Athens). Graffiti, skulls and messages printed front and back, in small runs.",about2:"Every piece has its own story, and it reads best when you wear it.",
   fAddr:"Athens, Greece",fTouch:"Get in touch",fContact:"Contact us",fStore:"Location",fInfo:"Information",fAbout:"About us",fShip:"Shipping information",fPay:"Payment information",fRet:"Returns & exchanges",fPriv:"Privacy policy - GDPR",
-  nlTxt:"Sign up for the latest news and drops.",nlBtn:"Subscribe",nlPh:"Your email",nlOk:"Thank you, you are in.",nlDup:"This email is already subscribed.",nlErr:"Subscription error. Please try again.",fFollow:"Follow us",
+  nlTxt:"Sign up for the latest news and drops.",nlBtn:"Subscribe",nlPh:"Your email",nlOk:"Thank you, you are in.",nlErr:"Something went wrong. Please try again.",fFollow:"Follow us",
   cookie:"By using this website you automatically accept that we use cookies.",ok:"Understood",
   co:"Checkout is not connected yet. Connect Stripe, Shopify or an order form."}
 };
@@ -237,7 +229,7 @@ var P=[
  {n:"SOUL SOCIETY TEE",c:"tee",pr:35,d:["Soul Society, ένα από τα πρώτα σχέδια του brand.","Soul Society, one of the brand's first designs."],
   im:[["Soul Society closeup.JPG","1p5Adp3e3eVq60p4s7NQYHznwGywNLl2N"]]},
  {n:"SOLNE JERSEY",c:"jersey",pr:45,d:["Jersey με print μπροστά και πίσω. Αθλητική γραμμή, street στυλ.","Jersey with front and back print. Sporty cut, street style."],
-  im:[["Jersey Front Print.JPG","1FmyKe5kWlHY45mOY0Gi-3HwEQC5rmsJz"],["jeresy non closeup front.PNG","1lfo_teAMVAq0U-VkJfGHIgQqutLg03_m"],["Jersey Back Print.JPG","1DTeKvhX4SDAAGc3FvtrMO4OwScCDFpbO"],["jersey non closeup back.PNG","17T8_2s7oGRn2fxBN8Al0xxNJv7KDqmzI"]]},
+  im:[["Jersey Front Print.JPG","1FmyKe5kWlHY45O0Gi-3HwEQC5rmsJz"],["jeresy non closeup front.PNG","1lfo_teAMVAq0U-VkJfGHIgQqutLg03_m"],["Jersey Back Print.JPG","1DTeKvhX4SDAAGc3FvtrMO4OwScCDFpbO"],["jersey non closeup back.PNG","17T8_2s7oGRn2fxBN8Al0xxNJv7KDqmzI"]]},
  {n:"SOLNE STREETWEAR HOODIE",c:"hoodie",pr:60,d:["Το hoodie της Solne με μπροστινό print. Ζεστό και βαρύ.","The Solne hoodie with front print. Warm and heavy."],
   im:[["Solne Streetwear Hoodie Front closeup.JPG","13MXI7DoQSf2ZID7Xb_zjt8iDNCjTKBSP"]]},
  {n:"THIRTYFOUR TRUCKER CAP",c:"acc",pr:25,one:1,d:["Trucker cap με το thirtyfour. Ρυθμιζόμενο μέγεθος.","Trucker cap with thirtyfour. Adjustable size."],
@@ -313,46 +305,6 @@ function renderCart(){
  $("#total").textContent=eur(tt);$("#cnt").textContent=cart.length}
 function openCart(){$("#drawer").classList.add("open");$("#ov").classList.add("open")}
 function closeAll(){$("#modal").classList.remove("open");$("#drawer").classList.remove("open");$("#ov").classList.remove("open")}
-/* newsletter client module (ready for Supabase + Resend / Railway) */
-var SolneNewsletter = {
-  storageKey: "solne-nl-queue",
-  readQueue: function(){
-    try{var raw=localStorage.getItem(this.storageKey);return raw?JSON.parse(raw):[]}catch(e){return[]}
-  },
-  writeQueue: function(q){
-    try{localStorage.setItem(this.storageKey,JSON.stringify(q))}catch(e){}
-  },
-  subscribe: function(email, lang){
-    var norm = String(email || "").trim().toLowerCase();
-    var payload = {
-      email: norm,
-      lang: lang,
-      brand: "Solne Clothes",
-      studio: "334 Creations Studio",
-      sender: SOLNE_SENDER_EMAIL,
-      created_at: new Date().toISOString()
-    };
-    if(!SOLNE_NEWSLETTER_ENDPOINT){
-      var q = this.readQueue();
-      if(q.some(function(item){return item.email === norm})){
-        return Promise.resolve({ok:true, duplicate:true, queued:true});
-      }
-      q.push(payload);
-      this.writeQueue(q);
-      return Promise.resolve({ok:true, duplicate:false, queued:true});
-    }
-    return fetch(SOLNE_NEWSLETTER_ENDPOINT, {
-      method: "POST",
-      headers: {"Content-Type": "application/json"},
-      body: JSON.stringify(payload)
-    }).then(function(res){
-      if(res.status === 409) return {ok:true, duplicate:true, queued:false};
-      if(!res.ok) throw new Error("HTTP " + res.status);
-      return res.json().catch(function(){return {ok:true}});
-    });
-  }
-};
-
 /* language */
 function setLang(l){L=l;try{localStorage.setItem("solne-lang",l)}catch(e){}
  document.documentElement.lang=l;
@@ -365,19 +317,19 @@ $$("[data-f]").forEach(function(a){a.onclick=function(){setFilter("all")}});
 $("#cartOpen").onclick=openCart;$("#cartClose").onclick=closeAll;$("#ov").onclick=closeAll;
 $("#checkout").onclick=function(){alert(t("co"))};
 $("#burger").onclick=function(){var n=$("#nav"),o=n.classList.toggle("open");this.setAttribute("aria-expanded",o)};
-$("#nl").onsubmit=function(e){
-  e.preventDefault();
-  var inp = $("#nlIn"), st = $("#nlStatus");
-  st.className = "nl-status";
-  st.textContent = "...";
-  SolneNewsletter.subscribe(inp.value, L).then(function(res){
-    st.textContent = res.duplicate ? t("nlDup") : t("nlOk");
-    inp.value = "";
-  }).catch(function(){
-    st.className = "nl-status err";
-    st.textContent = t("nlErr");
-  });
-};
+$("#nl").onsubmit=function(e){e.preventDefault();
+ var f=this,inp=$("#nlIn"),btn=f.querySelector("button");
+ btn.disabled=true;btn.textContent="…";
+ fetch(SOLNE_NEWSLETTER_ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json"},
+  body:JSON.stringify({email:inp.value})})
+  .then(function(r){return r.json().then(function(j){return{ok:r.ok,j:j}})})
+  .then(function(r){
+   if(r.ok){f.innerHTML="";f.appendChild(el("p","",t("nlOk")))}
+   else{btn.disabled=false;btn.textContent=t("nlBtn");var m=el("p","",t("nlErr"));m.style.color="#e8b923";m.style.marginTop="8px";
+    f.appendChild(m);setTimeout(function(){m.remove()},4000)}
+  })
+  .catch(function(){btn.disabled=false;btn.textContent=t("nlBtn");var m=el("p","",t("nlErr"));m.style.color="#e8b923";m.style.marginTop="8px";
+   f.appendChild(m);setTimeout(function(){m.remove()},4000)})};
 $("#ck").onclick=function(){$("#cookie").remove();try{localStorage.setItem("solne-ck","1")}catch(e){}};
 try{if(localStorage.getItem("solne-ck"))$("#cookie").remove()}catch(e){}
 document.addEventListener("keydown",function(e){if(e.key==="Escape")closeAll()});
