@@ -12,37 +12,39 @@
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;600;800&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#fff;--ink:#222;--mute:#767676;--line:#e6e6e6;--soft:#f4f4f4;--sun:#e8b923;--font:'Manrope',system-ui,-apple-system,'Segoe UI',Arial,sans-serif;color-scheme:light}
-*{box-sizing:border-box;margin:0}
-html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--ink);font:400 14px/1.6 var(--font);-webkit-font-smoothing:antialiased}
+*{box-sizing:border-box;margin:0;min-width:0}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{background:var(--bg);color:var(--ink);font:400 14px/1.6 var(--font);-webkit-font-smoothing:antialiased;overflow-x:hidden;width:100%}
 img{display:block;width:100%;height:100%;object-fit:cover}
-a{color:inherit;text-decoration:none}
+a{color:inherit;text-decoration:none;overflow-wrap:anywhere}
 button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 ul{list-style:none;padding:0}
 :focus-visible{outline:2px solid var(--sun);outline-offset:3px}
-header{position:sticky;top:0;z-index:30;background:var(--bg);border-bottom:1px solid var(--line);display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:0 28px;height:68px}
+header{position:sticky;top:0;z-index:30;background:var(--bg);border-bottom:1px solid var(--line);display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:0 28px;height:68px;gap:12px}
 .nav{display:flex;gap:26px;height:100%;align-items:stretch}
 .nav>li{position:relative;display:flex;align-items:center}
-.nav a,.nav>li>button{font-weight:600;font-size:13px;letter-spacing:.06em;text-transform:uppercase}
+.nav a,.nav>li>button{font-weight:600;font-size:13px;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
 .nav>li:hover>a,.nav>li:hover>button{color:var(--mute)}
 .dd{position:absolute;top:100%;left:-16px;background:var(--bg);border:1px solid var(--line);min-width:200px;padding:10px 0;display:none}
 .nav>li:hover .dd,.nav>li:focus-within .dd{display:block}
 .dd button{display:block;width:100%;text-align:left;padding:8px 18px;font-size:13px;letter-spacing:.04em;text-transform:uppercase}
 .dd button:hover{background:var(--soft)}
-.logo{font-weight:800;font-size:28px;letter-spacing:.34em;padding-left:.34em}
-.logo{display:block}.logo img{width:auto;height:38px;object-fit:contain}
-.right{justify-self:end;display:flex;gap:20px;align-items:center;font-weight:600;font-size:13px;letter-spacing:.06em;text-transform:uppercase}
-.lang button{opacity:.45;padding:2px 3px}
+.logo{font-weight:800;font-size:28px;letter-spacing:.34em;padding-left:.34em;display:flex;align-items:center;justify-content:center}
+.logo img{width:auto;height:38px;object-fit:contain}
+.right{justify-self:end;display:flex;gap:16px;align-items:center;font-weight:600;font-size:13px;letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+.lang{display:inline-flex;align-items:center;gap:4px}
+.lang button{opacity:.45;padding:4px 3px;min-height:36px}
 .lang button[aria-pressed="true"]{opacity:1;text-decoration:underline;text-underline-offset:4px}
-.burger{display:none;font-size:22px}
+#cartOpen{min-height:36px;padding:4px 2px}
+.burger{display:none;font-size:22px;min-width:40px;min-height:40px;align-items:center;justify-content:center;justify-self:start}
 /* slideshow */
 .show{position:relative;height:min(82vh,760px);background:var(--soft);overflow:hidden}
 .slide{position:absolute;inset:0;opacity:0;transition:opacity .8s;pointer-events:none}
 .slide.on{opacity:1;pointer-events:auto}
 .slide::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.5),transparent 45%)}
-.cap{position:absolute;z-index:2;left:50%;bottom:54px;transform:translateX(-50%);color:#fff;font-weight:800;font-size:clamp(22px,3.4vw,40px);letter-spacing:.12em;text-transform:uppercase;white-space:nowrap;border-bottom:2px solid #fff;padding-bottom:4px}
+.cap{position:absolute;z-index:2;left:50%;bottom:54px;transform:translateX(-50%);color:#fff;font-weight:800;font-size:clamp(22px,3.4vw,40px);letter-spacing:.12em;text-transform:uppercase;white-space:nowrap;border-bottom:2px solid #fff;padding-bottom:4px;max-width:90vw;overflow:hidden;text-overflow:ellipsis}
 .ctl{position:absolute;z-index:3;bottom:16px;left:50%;transform:translateX(-50%);display:flex;gap:14px;align-items:center;color:#fff;font-size:13px}
-.ctl button{color:#fff;padding:4px 10px;font-weight:600}
+.ctl button{color:#fff;padding:6px 12px;font-weight:600;min-height:36px}
 .arr{position:absolute;z-index:3;top:50%;transform:translateY(-50%);color:#fff;font-size:34px;width:48px;height:64px}
 .arr.l{left:8px}.arr.r{right:8px}
 /* tiles */
@@ -67,7 +69,7 @@ header{position:sticky;top:0;z-index:30;background:var(--bg);border-bottom:1px s
 .ph img+img{opacity:0}
 .card:hover .ph img+img{opacity:1}
 .tag{position:absolute;top:10px;left:10px;z-index:2;background:var(--bg);font-size:11px;font-weight:700;padding:3px 9px;letter-spacing:.06em;text-transform:uppercase}
-.card h3{font-weight:600;font-size:13px;letter-spacing:.05em;margin-top:12px;text-transform:uppercase}
+.card h3{font-weight:600;font-size:13px;letter-spacing:.05em;margin-top:12px;text-transform:uppercase;overflow-wrap:anywhere}
 .card p{color:var(--mute)}
 .card small{color:var(--mute);font-size:12px}
 /* about */
@@ -79,13 +81,13 @@ header{position:sticky;top:0;z-index:30;background:var(--bg);border-bottom:1px s
 footer{background:#222;color:#d9d9d9;padding:56px 28px calc(28px + env(safe-area-inset-bottom,0px))}
 .fcols{display:grid;grid-template-columns:repeat(4,1fr);gap:32px}
 footer h4{color:#fff;font-weight:800;font-size:13px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px}
-footer li{margin-bottom:6px}
+footer li{margin-bottom:8px}
 footer a:hover,footer li button:hover{color:#fff;text-decoration:underline}
-footer li button{padding:0;text-align:left;font:inherit;color:inherit}
-footer form{display:flex;margin-top:10px;gap:6px;flex-wrap:wrap}
-footer input{flex:1;min-width:160px;border:1px solid #666;background:transparent;color:#fff;padding:11px 12px;font:inherit}
-footer form button{background:#fff;color:#222;padding:0 18px;font-weight:700;min-height:44px}
-.nl-status{margin-top:8px;font-size:12px;color:#e8b923}
+footer li button{padding:4px 0;text-align:left;font:inherit;color:inherit;overflow-wrap:anywhere;line-height:1.45}
+footer form{display:flex;margin-top:10px;gap:8px;flex-wrap:wrap}
+footer input{flex:1 1 100%;width:100%;min-width:0;border:1px solid #666;background:transparent;color:#fff;padding:11px 12px;font:inherit}
+footer form button{background:#fff;color:#222;padding:0 18px;font-weight:700;min-height:44px;width:100%}
+.nl-status{margin-top:8px;font-size:12px;color:#e8b923;overflow-wrap:anywhere}
 .nl-status.err{color:#ff8a80}
 .copy{margin-top:40px;padding-top:18px;border-top:1px solid #444;font-size:12px;color:#999}
 /* overlays */
@@ -122,24 +124,42 @@ footer form button{background:#fff;color:#222;padding:0 18px;font-weight:700;min
 .line button{color:var(--mute);font-size:12px;text-decoration:underline}
 .tot{display:flex;justify-content:space-between;font-weight:700;padding:16px 0}
 .empty{color:var(--mute);padding:30px 0}
-.cookie{position:fixed;z-index:50;left:16px;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));max-width:520px;background:#222;color:#eee;padding:14px 16px;display:flex;gap:14px;align-items:center;font-size:13px}
-.cookie button{background:#fff;color:#222;padding:8px 16px;font-weight:700;white-space:nowrap}
+.cookie{position:fixed;z-index:50;left:16px;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));max-width:520px;background:#222;color:#eee;padding:14px 16px;display:flex;gap:14px;align-items:center;font-size:13px;flex-wrap:wrap}
+.cookie button{background:#fff;color:#222;padding:8px 16px;font-weight:700;white-space:nowrap;min-height:38px}
+
 @media (max-width:900px){
- header{padding:0 14px;height:60px;grid-template-columns:auto 1fr auto}
- .burger{display:block}
- .nav{display:none;position:absolute;top:60px;left:0;right:0;background:var(--bg);border-bottom:1px solid var(--line);flex-direction:column;gap:0;padding:8px 14px}
+ header{padding:0 12px;height:60px;grid-template-columns:40px 1fr auto;gap:8px}
+ .burger{display:flex}
+ .nav{display:none;position:fixed;top:60px;left:0;right:0;background:var(--bg);border-bottom:1px solid var(--line);flex-direction:column;gap:0;padding:12px 16px;height:auto;z-index:35;max-height:calc(100vh - 60px);overflow-y:auto}
  .nav.open{display:flex}
  .nav>li{display:block;padding:8px 0}
- .dd{position:static;display:block;border:0;padding:4px 0 0 10px}
- .logo{justify-self:center}.logo img{height:30px}
+ .nav>li>a,.nav>li>button{display:block;padding:6px 0}
+ .dd{position:static;display:block;border:0;padding:4px 0 0 12px;min-width:0}
+ .logo{justify-self:center;padding-left:0;letter-spacing:.22em;font-size:22px}
+ .logo img{height:28px}
+ .right{gap:10px;font-size:12px;letter-spacing:.04em}
+ .show{height:min(68vh,560px)}
  .tiles,.grid{grid-template-columns:repeat(2,1fr)}
  .story article{padding:40px 20px}
- .fcols{grid-template-columns:1fr 1fr}
- .wrap{padding:40px 14px}
+ .fcols{grid-template-columns:repeat(2,1fr);gap:24px 18px}
+ .wrap{padding:40px 16px}
+ footer{padding:44px 16px calc(28px + env(safe-area-inset-bottom,0px))}
  .modal{grid-template-columns:1fr;inset:0}
+ .info{padding:24px 18px}
  .info-modal{inset:4vh 4vw;padding:28px 20px}
- .cap{font-size:20px;bottom:56px}
+ .cap{font-size:18px;bottom:56px}
 }
+
+@media (max-width:520px){
+ header{padding:0 10px;grid-template-columns:36px minmax(0,1fr) auto;gap:6px}
+ .logo img{height:24px}
+ .right{gap:8px;font-size:11px;letter-spacing:.02em}
+ .lang{gap:2px}
+ .lang button{padding:4px 2px}
+ .fcols{grid-template-columns:1fr;gap:28px}
+ .arr{width:40px;height:52px;font-size:28px}
+}
+
 @media (prefers-reduced-motion:reduce){*{transition:none!important}html{scroll-behavior:auto}}
 </style>
 </head>
@@ -148,15 +168,15 @@ footer form button{background:#fff;color:#222;padding:0 18px;font-weight:700;min
   <button class="burger" id="burger" aria-label="Menu" aria-expanded="false">&#9776;</button>
   <ul class="nav" id="nav">
     <li><a href="#shop" data-f="new" data-i="nNew"></a></li>
-    <li><button data-i="nShop"></button>
+    <li><button type="button" data-i="nShop"></button>
       <div class="dd" id="dd"></div></li>
     <li><a href="#about" data-i="nAbout"></a></li>
     <li><a href="#contact" data-i="nContact"></a></li>
   </ul>
   <a class="logo" href="#top" id="top" aria-label="Solne"></a>
   <div class="right">
-    <span class="lang"><button data-l="el" aria-pressed="true">EL</button>|<button data-l="en" aria-pressed="false">EN</button></span>
-    <button id="cartOpen"><span data-i="cart"></span> (<span id="cnt">0</span>)</button>
+    <span class="lang"><button type="button" data-l="el" aria-pressed="true">EL</button>|<button type="button" data-l="en" aria-pressed="false">EN</button></span>
+    <button type="button" id="cartOpen"><span data-i="cart"></span> (<span id="cnt">0</span>)</button>
   </div>
 </header>
 
@@ -192,7 +212,7 @@ footer form button{background:#fff;color:#222;padding:0 18px;font-weight:700;min
       <li><button type="button" data-info="privacy" data-i="fPriv"></button></li>
     </ul></div>
     <div><h4>Newsletter</h4><p data-i="nlTxt"></p>
-      <form id="nl"><input type="email" required id="nlIn"><button data-i="nlBtn"></button></form>
+      <form id="nl"><input type="email" required id="nlIn"><button type="submit" data-i="nlBtn"></button></form>
       <div class="nl-status" id="nlStatus" aria-live="polite"></div>
       <h4 style="margin-top:22px" data-i="fFollow"></h4><ul><li><a href="https://instagram.com/dreams_dont_pay_rent" target="_blank" rel="noopener noreferrer">Instagram (@dreams_dont_pay_rent)</a></li></ul></div>
   </div>
@@ -339,7 +359,7 @@ function buildGrid(){
   b.appendChild(el("small","",p.one?"One size":"S M L XL"));
   b.onclick=function(){openP(i)};g.appendChild(b)});
  $("#shopTitle").textContent=t(filter);$("#num").textContent=n+" "+t("items")}
-function setFilter(f){filter=f;buildGrid();$("#nav").classList.remove("open")}
+function setFilter(f){filter=f;buildGrid();$("#nav").classList.remove("open");$("#burger").setAttribute("aria-expanded","false")}
 function buildDD(){
  var d=$("#dd");d.innerHTML="";
  ["all"].concat(CATS).forEach(function(c){var b=el("button","",t(c));b.onclick=function(){setFilter(c);$("#shop").scrollIntoView()};d.appendChild(b)})}
@@ -361,6 +381,7 @@ function openP(i){
 function openInfo(key){
  var item=(INFO_PAGES[L]&&INFO_PAGES[L][key])?INFO_PAGES[L][key]:null;
  if(!item)return;
+ closeAll();
  activeInfoKey=key;
  var m=$("#infoModal");
  m.innerHTML="";
@@ -372,8 +393,6 @@ function openInfo(key){
   item.list.forEach(function(liTxt){ul.appendChild(el("li","",liTxt))});
   m.appendChild(ul);
  }
- closeAll();
- activeInfoKey=key;
  m.classList.add("open");
  $("#ov").classList.add("open");
  m.scrollTop=0;
@@ -447,6 +466,7 @@ function setLang(l){L=l;try{localStorage.setItem("solne-lang",l)}catch(e){}
 $$("[data-l]").forEach(function(b){b.onclick=function(){setLang(b.dataset.l)}});
 $$("[data-f]").forEach(function(a){a.onclick=function(){setFilter("all")}});
 $$("[data-info]").forEach(function(b){b.onclick=function(){openInfo(b.dataset.info)}});
+$$("#nav a").forEach(function(a){a.addEventListener("click",function(){$("#nav").classList.remove("open");$("#burger").setAttribute("aria-expanded","false")})});
 $("#cartOpen").onclick=openCart;$("#cartClose").onclick=closeAll;$("#ov").onclick=closeAll;
 $("#checkout").onclick=function(){alert(t("co"))};
 $("#burger").onclick=function(){var n=$("#nav"),o=n.classList.toggle("open");this.setAttribute("aria-expanded",o)};
@@ -458,9 +478,9 @@ $("#nl").onsubmit=function(e){
   SolneNewsletter.subscribe(inp.value, L).then(function(res){
     st.textContent = res.duplicate ? t("nlDup") : t("nlOk");
     inp.value = "";
-  }).catch(function(){
+  }).catch(function(err){
     st.className = "nl-status err";
-    st.textContent = t("nlErr");
+    st.textContent = t("nlErr") + (err && err.message ? " (" + err.message + ")" : "");
   });
 };
 $("#ck").onclick=function(){$("#cookie").remove();try{localStorage.setItem("solne-ck","1")}catch(e){}};
