@@ -80,7 +80,8 @@ footer{background:#222;color:#d9d9d9;padding:56px 28px calc(28px + env(safe-area
 .fcols{display:grid;grid-template-columns:repeat(4,1fr);gap:32px}
 footer h4{color:#fff;font-weight:800;font-size:13px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px}
 footer li{margin-bottom:6px}
-footer a:hover{color:#fff;text-decoration:underline}
+footer a:hover,footer li button:hover{color:#fff;text-decoration:underline}
+footer li button{padding:0;text-align:left;font:inherit;color:inherit}
 footer form{display:flex;margin-top:10px;gap:6px;flex-wrap:wrap}
 footer input{flex:1;min-width:160px;border:1px solid #666;background:transparent;color:#fff;padding:11px 12px;font:inherit}
 footer form button{background:#fff;color:#222;padding:0 18px;font-weight:700;min-height:44px}
@@ -92,6 +93,12 @@ footer form button{background:#fff;color:#222;padding:0 18px;font-weight:700;min
 .ov.open{display:block}
 .modal{position:fixed;z-index:41;inset:4vh 6vw;background:var(--bg);display:none;grid-template-columns:1.15fr 1fr;overflow:auto}
 .modal.open{display:grid}
+.info-modal{position:fixed;z-index:43;inset:8vh 12vw;max-width:720px;margin:0 auto;background:var(--bg);display:none;overflow:auto;padding:40px 36px;border:1px solid var(--line)}
+.info-modal.open{display:block}
+.info-modal h2{font-weight:800;font-size:24px;letter-spacing:.05em;text-transform:uppercase;margin-bottom:16px;padding-right:44px}
+.info-modal p{color:var(--mute);margin-bottom:14px}
+.info-modal ul{margin:10px 0 18px 18px;list-style:disc;color:var(--mute)}
+.info-modal li{margin-bottom:6px}
 .gal{background:var(--soft);display:grid;grid-template-columns:1fr 1fr;gap:2px;align-content:start}
 .gal div{aspect-ratio:4/5}
 .gal div:first-child{grid-column:1/3;aspect-ratio:1/1}
@@ -130,6 +137,7 @@ footer form button{background:#fff;color:#222;padding:0 18px;font-weight:700;min
  .fcols{grid-template-columns:1fr 1fr}
  .wrap{padding:40px 14px}
  .modal{grid-template-columns:1fr;inset:0}
+ .info-modal{inset:4vh 4vw;padding:28px 20px}
  .cap{font-size:20px;bottom:56px}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important}html{scroll-behavior:auto}}
@@ -176,7 +184,13 @@ footer form button{background:#fff;color:#222;padding:0 18px;font-weight:700;min
   <div class="fcols">
     <div><h4>Solne</h4><p data-i="fAddr"></p><p style="margin-top:8px"><a href="mailto:codinginquires1@gmail.com">codinginquires1@gmail.com</a></p></div>
     <div><h4 data-i="fTouch"></h4><ul><li><a href="mailto:codinginquires1@gmail.com" data-i="fContact"></a></li><li><a href="#contact" data-i="fStore"></a></li></ul></div>
-    <div><h4 data-i="fInfo"></h4><ul><li><a href="#about" data-i="fAbout"></a></li><li><a href="#" data-i="fShip"></a></li><li><a href="#" data-i="fPay"></a></li><li><a href="#" data-i="fRet"></a></li><li><a href="#" data-i="fPriv"></a></li></ul></div>
+    <div><h4 data-i="fInfo"></h4><ul>
+      <li><button type="button" data-info="about" data-i="fAbout"></button></li>
+      <li><button type="button" data-info="shipping" data-i="fShip"></button></li>
+      <li><button type="button" data-info="payment" data-i="fPay"></button></li>
+      <li><button type="button" data-info="returns" data-i="fRet"></button></li>
+      <li><button type="button" data-info="privacy" data-i="fPriv"></button></li>
+    </ul></div>
     <div><h4>Newsletter</h4><p data-i="nlTxt"></p>
       <form id="nl"><input type="email" required id="nlIn"><button data-i="nlBtn"></button></form>
       <div class="nl-status" id="nlStatus" aria-live="polite"></div>
@@ -187,6 +201,7 @@ footer form button{background:#fff;color:#222;padding:0 18px;font-weight:700;min
 
 <div class="ov" id="ov"></div>
 <div class="modal" id="modal" role="dialog" aria-modal="true"></div>
+<div class="info-modal" id="infoModal" role="dialog" aria-modal="true"></div>
 <aside class="drawer" id="drawer" aria-label="Cart">
   <h2 data-i="cart"></h2>
   <div class="lines" id="lines"></div>
@@ -203,6 +218,43 @@ footer form button{background:#fff;color:#222;padding:0 18px;font-weight:700;min
    3. When SOLNE_NEWSLETTER_ENDPOINT is empty, signups queue locally in localStorage ("solne-nl-queue"). */
 var SOLNE_NEWSLETTER_ENDPOINT = "https://solne-newsletter-api.ct25098.workers.dev/api/newsletter/subscribe";
 var SOLNE_SENDER_EMAIL = "codinginquires1@gmail.com";
+
+var INFO_PAGES={
+ el:{
+  about:{title:"Η Εταιρία",
+   body:["Το streetwear brand Solne δημιουργήθηκε στην Αθήνα από το 334 Creations Studio. Graffiti lettering, κρανία και μηνύματα τυπωμένα μπροστά και πίσω, σε περιορισμένες παραγωγές."],
+   list:["Μικρά runs με έμφαση στο print και τη γραμμή.","Αθήνα, Ελλάδα — επικοινωνία στο codinginquires1@gmail.com."]},
+  shipping:{title:"Πληροφορίες Αποστολής",
+   body:["Οι παραγγελίες ετοιμάζονται σε 1–3 εργάσιμες ημέρες και αποστέλλονται σε όλη την Ελλάδα."],
+   list:["Αποστολή με courier στην Ελλάδα (εκτιμώμενος χρόνος παράδοσης 2–4 εργάσιμες).","Tracking number μόλις φύγει το δέμα.","Για αποστολές εκτός Ελλάδας επικοινωνήστε στο codinginquires1@gmail.com."]},
+  payment:{title:"Πληροφορίες Πληρωμής",
+   body:["Όλες οι τιμές στο κατάστημα περιλαμβάνουν ΦΠΑ."],
+   list:["Πληρωμή με κάρτα / online checkout μόλις συνδεθεί ο πάροχος πληρωμών.","Για άμεση κράτηση κομματιού μπορείτε να επικοινωνήσετε στο codinginquires1@gmail.com."]},
+  returns:{title:"Ανταλλαγές - Επιστροφές",
+   body:["Δέχεστε αλλαγή μεγέθους ή επιστροφή εντός 14 ημερών από την παραλαβή."],
+   list:["Το προϊόν πρέπει να είναι αφόρετο, άπλυτο και στην αρχική του κατάσταση με όλα τα ταμπελάκια.","Τα έξοδα επιστροφής επιβαρύνουν τον αποστολέα εκτός αν πρόκειται για ελαττωματικό κομμάτι."]},
+  privacy:{title:"Πολιτική απορρήτου - GDPR",
+   body:["Η Solne Clothes (334 Creations Studio) συλλέγει μόνο τα απολύτως απαραίτητα δεδομένα για την εξυπηρέτηση παραγγελιών και το newsletter."],
+   list:["Το email σου στο newsletter χρησιμοποιείται αποκλειστικά για ενημερώσεις drops και νέων κυκλοφοριών.","Δεν πωλούμε ούτε παραχωρούμε προσωπικά δεδομένα σε τρίτους.","Μπορείς να ζητήσεις διαγραφή ή ενημέρωση στοιχείων στο codinginquires1@gmail.com."]}
+ },
+ en:{
+  about:{title:"About Us",
+   body:["Solne Clothes was created in Athens by 334 Creations Studio. Graffiti lettering, skulls and messages printed front and back in small runs."],
+   list:["Small-batch streetwear focused on print and fit.","Athens, Greece — reach us at codinginquires1@gmail.com."]},
+  shipping:{title:"Shipping Information",
+   body:["Orders are prepared within 1–3 business days and shipped across Greece."],
+   list:["Courier delivery across Greece (estimated 2–4 business days).","Tracking details provided once dispatched.","For international shipping inquiries, contact codinginquires1@gmail.com."]},
+  payment:{title:"Payment Information",
+   body:["All listed prices include VAT."],
+   list:["Card / online checkout once the payment gateway is connected.","For direct piece reservations, email codinginquires1@gmail.com."]},
+  returns:{title:"Returns & Exchanges",
+   body:["Size exchanges or returns are accepted within 14 days of delivery."],
+   list:["Items must be unworn, unwashed, and in original condition with tags intact.","Return shipping is covered by the sender unless the item arrived defective."]},
+  privacy:{title:"Privacy Policy - GDPR",
+   body:["Solne Clothes (334 Creations Studio) collects only the minimal data needed for orders and newsletter updates."],
+   list:["Your newsletter email is used solely for drop announcements and brand updates.","We do not sell or share personal data with third parties.","Request access or deletion anytime via codinginquires1@gmail.com."]}
+ }
+};
 
 var T={
  el:{nNew:"Νέα συλλογή",nShop:"Shop",nAbout:"Το brand",nContact:"Επικοινωνία",cart:"Καλάθι",shopBy:"Αγορές ανά κατηγορία",
@@ -247,7 +299,7 @@ var P=[
 var CATS=["tee","jersey","hoodie","acc"];
 var SL=[[3,"newDrop","new"],[2,null,"tee"],[4,null,"tee"]];
 var $=function(s){return document.querySelector(s)},$$=function(s){return document.querySelectorAll(s)};
-var L="el",filter="all",cart=[],si=0,timer=null,playing=true;
+var L="el",filter="all",cart=[],si=0,timer=null,playing=true,activeInfoKey=null;
 try{var sv=localStorage.getItem("solne-lang");if(sv==="en"||sv==="el")L=sv}catch(e){}
 function t(k){return T[L][k]}
 function eur(v){return v.toFixed(2).replace(".",",")+" €"}
@@ -293,6 +345,7 @@ function buildDD(){
  ["all"].concat(CATS).forEach(function(c){var b=el("button","",t(c));b.onclick=function(){setFilter(c);$("#shop").scrollIntoView()};d.appendChild(b)})}
 /* product modal */
 function openP(i){
+ closeAll();
  var p=P[i],m=$("#modal"),sz=p.one?["One size"]:["S","M","L","XL"],pick=p.one?sz[0]:"M";
  m.innerHTML="";
  var x=el("button","x","×");x.setAttribute("aria-label",t("close"));x.onclick=closeAll;m.appendChild(x);
@@ -304,6 +357,27 @@ function openP(i){
  inf.appendChild(S);
  var add=el("button","add",t("add"));add.onclick=function(){cart.push({i:i,s:pick});renderCart();closeAll();openCart()};
  inf.appendChild(add);m.appendChild(inf);m.classList.add("open");$("#ov").classList.add("open");m.scrollTop=0}
+/* info modal (ΠΛΗΡΟΦΟΡΙΕΣ) */
+function openInfo(key){
+ var item=(INFO_PAGES[L]&&INFO_PAGES[L][key])?INFO_PAGES[L][key]:null;
+ if(!item)return;
+ activeInfoKey=key;
+ var m=$("#infoModal");
+ m.innerHTML="";
+ var x=el("button","x","×");x.setAttribute("aria-label",t("close"));x.onclick=closeAll;m.appendChild(x);
+ m.appendChild(el("h2","",item.title));
+ (item.body||[]).forEach(function(txt){m.appendChild(el("p","",txt))});
+ if(item.list&&item.list.length){
+  var ul=el("ul");
+  item.list.forEach(function(liTxt){ul.appendChild(el("li","",liTxt))});
+  m.appendChild(ul);
+ }
+ closeAll();
+ activeInfoKey=key;
+ m.classList.add("open");
+ $("#ov").classList.add("open");
+ m.scrollTop=0;
+}
 function renderCart(){
  var Ls=$("#lines");Ls.innerHTML="";var tt=0;
  if(!cart.length)Ls.appendChild(el("div","empty",t("empty")));
@@ -312,8 +386,14 @@ function renderCart(){
   var mid=el("div");mid.appendChild(el("b","",p.n));mid.appendChild(el("br"));mid.appendChild(el("small","",c.s+" · "+eur(p.pr)));r.appendChild(mid);
   var rm=el("button","",t("remove"));rm.onclick=function(){cart.splice(k,1);renderCart()};r.appendChild(rm);Ls.appendChild(r)});
  $("#total").textContent=eur(tt);$("#cnt").textContent=cart.length}
-function openCart(){$("#drawer").classList.add("open");$("#ov").classList.add("open")}
-function closeAll(){$("#modal").classList.remove("open");$("#drawer").classList.remove("open");$("#ov").classList.remove("open")}
+function openCart(){closeAll();$("#drawer").classList.add("open");$("#ov").classList.add("open")}
+function closeAll(){
+ activeInfoKey=null;
+ $("#modal").classList.remove("open");
+ $("#infoModal").classList.remove("open");
+ $("#drawer").classList.remove("open");
+ $("#ov").classList.remove("open");
+}
 /* newsletter client module (Cloudflare Workers + KV + Resend) */
 var SolneNewsletter = {
   storageKey: "solne-nl-queue",
@@ -360,9 +440,13 @@ function setLang(l){L=l;try{localStorage.setItem("solne-lang",l)}catch(e){}
  $$("[data-i]").forEach(function(e){e.textContent=t(e.dataset.i)});
  $$("[data-l]").forEach(function(b){b.setAttribute("aria-pressed",b.dataset.l===l)});
  $("#nlIn").placeholder=t("nlPh");
- buildShow();buildTiles();buildGrid();buildDD();renderCart();closeAll()}
+ var keepKey=activeInfoKey;
+ buildShow();buildTiles();buildGrid();buildDD();renderCart();closeAll();
+ if(keepKey)openInfo(keepKey);
+}
 $$("[data-l]").forEach(function(b){b.onclick=function(){setLang(b.dataset.l)}});
 $$("[data-f]").forEach(function(a){a.onclick=function(){setFilter("all")}});
+$$("[data-info]").forEach(function(b){b.onclick=function(){openInfo(b.dataset.info)}});
 $("#cartOpen").onclick=openCart;$("#cartClose").onclick=closeAll;$("#ov").onclick=closeAll;
 $("#checkout").onclick=function(){alert(t("co"))};
 $("#burger").onclick=function(){var n=$("#nav"),o=n.classList.toggle("open");this.setAttribute("aria-expanded",o)};
