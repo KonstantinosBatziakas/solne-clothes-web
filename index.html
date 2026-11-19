@@ -116,7 +116,10 @@ footer form button{background:#fff;color:#222;padding:0 18px;font-weight:700;min
 .x{position:absolute;top:10px;right:16px;z-index:3;font-size:30px;line-height:1;background:var(--bg);width:40px;height:40px;border-radius:50%}
 .drawer{position:fixed;z-index:42;top:0;right:0;bottom:0;width:min(400px,100vw);background:var(--bg);transform:translateX(100%);transition:transform .3s;display:flex;flex-direction:column;padding:22px}
 .drawer.open{transform:none}
-.drawer h2{font-weight:800;font-size:18px;letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px}
+.drawer-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.drawer h2{font-weight:800;font-size:18px;letter-spacing:.08em;text-transform:uppercase;margin:0}
+.ship-guide-link{font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;text-decoration:underline;text-underline-offset:3px;color:var(--ink);text-align:right;line-height:1.35}
+.ship-guide-link:hover{color:var(--mute)}
 .lines{flex:1;overflow:auto}
 .line{display:grid;grid-template-columns:64px 1fr auto;gap:12px;padding:12px 0;border-bottom:1px solid var(--line);align-items:center}
 .line .ph{aspect-ratio:4/5}
@@ -171,6 +174,14 @@ footer form button{background:#fff;color:#222;padding:0 18px;font-weight:700;min
 .ordbtn.alt{background:transparent;color:var(--ink);border:1px solid var(--ink)}
 .ordst{color:var(--mute);margin-top:12px;font-size:12px}
 .add:disabled:hover{background:var(--ink);color:#fff}
+.pdf-modal{position:fixed;z-index:44;inset:4vh 6vw;max-width:960px;margin:0 auto;background:var(--bg);display:none;flex-direction:column;border:1px solid var(--line)}
+.pdf-modal.open{display:flex}
+.pdf-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 18px;border-bottom:1px solid var(--line)}
+.pdf-head h2{font-weight:800;font-size:16px;letter-spacing:.06em;text-transform:uppercase;margin:0}
+.pdf-actions{display:flex;align-items:center;gap:12px}
+.pdf-dl{font-size:12px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;text-decoration:underline;text-underline-offset:3px}
+.pdf-frame{width:100%;flex:1;border:0;background:var(--soft)}
+@media (max-width:900px){.pdf-modal{inset:0}}
 </style>
 </head>
 <body>
@@ -232,8 +243,21 @@ footer form button{background:#fff;color:#222;padding:0 18px;font-weight:700;min
 <div class="ov" id="ov"></div>
 <div class="modal" id="modal" role="dialog" aria-modal="true"></div>
 <div class="info-modal" id="infoModal" role="dialog" aria-modal="true"></div>
+<div class="pdf-modal" id="pdfModal" role="dialog" aria-modal="true">
+  <div class="pdf-head">
+    <h2 data-i="pdfTitle"></h2>
+    <div class="pdf-actions">
+      <a class="pdf-dl" id="pdfDownload" href="SOLNE_Shipping_Delivery_Guide_v2.pdf" target="_blank" rel="noopener noreferrer" data-i="pdfOpen"></a>
+      <button type="button" class="x" style="position:static" id="pdfClose" aria-label="Close">×</button>
+    </div>
+  </div>
+  <iframe class="pdf-frame" id="pdfFrame" title="SOLNE Shipping & Delivery Guide"></iframe>
+</div>
 <aside class="drawer" id="drawer" aria-label="Cart">
-  <h2 data-i="cart"></h2>
+  <div class="drawer-head">
+    <h2 data-i="cart"></h2>
+    <button type="button" class="ship-guide-link" id="openShipPdf" data-i="shipGuideCta"></button>
+  </div>
   <div class="lines" id="lines"></div>
   <div class="tot"><span data-i="total"></span><span id="total">0,00 €</span></div>
   <p class="cartnote" data-i="cartNote"></p>
@@ -249,6 +273,7 @@ footer form button{background:#fff;color:#222;padding:0 18px;font-weight:700;min
 3. When SOLNE_NEWSLETTER_ENDPOINT is empty, signups queue locally in localStorage ("solne-nl-queue"). */
 var SOLNE_NEWSLETTER_ENDPOINT = "https://solne-newsletter-api.ct25098.workers.dev/api/newsletter/subscribe";
 var SOLNE_SENDER_EMAIL = "codinginquires1@gmail.com";
+var SOLNE_SHIPPING_PDF = "SOLNE_Shipping_Delivery_Guide_v2.pdf";
 
 var INFO_PAGES={
  el:{
@@ -256,8 +281,8 @@ var INFO_PAGES={
    body:["Το streetwear brand Solne δημιουργήθηκε στην Αθήνα από το 334 Creations Studio. Graffiti lettering, κρανία και μηνύματα τυπωμένα μπροστά και πίσω, σε περιορισμένες παραγωγές."],
    list:["Μικρά runs με έμφαση στο print και τη γραμμή.","Αθήνα, Ελλάδα — επικοινωνία στο codinginquires1@gmail.com."]},
   shipping:{title:"Πληροφορίες Αποστολής",
-   body:["Η παράδοση συμφωνείται μετά το αίτημα παραγγελίας σου."],
-   list:["Συνάντηση: δωρεάν, σε σημείο που συμφωνούμε.","Box Now: +4 €, παραλαβή από locker.","Άλλος τρόπος (π.χ. courier) κατόπιν συνεννόησης στο Instagram."]},
+   body:["Η παράδοση συμφωνείται μετά το αίτημα παραγγελίας σου, σύμφωνα με τον τιμοκατάλογο BOX NOW και ACS Courier."],
+   list:["Συνάντηση: δωρεάν, σε σημείο που συμφωνούμε.","BOX NOW Locker: Ελλάδα 1,50 € (Mini), 3,00 € (Μικρό), 4,00 € (Μεσαίο), 8,00 € (Μεγάλο) + 1,00 € για νησιωτική Ελλάδα.","ACS Courier Express (έως 2 kg): από 5,20 € εντός πόλης έως 13,91 € προς νησιωτικούς προορισμούς, καθώς και ACS Smart Point (9,00 € εντός / 16,00 € εκτός νομού) ή ACS Kiosk Xpress (5,00 € εντός / 10,00 € εκτός νομού).","Η τελική χρέωση αποστολής επιβεβαιώνεται κατά την επικοινωνία στο μήνυμα παραγγελίας."]},
   payment:{title:"Πληροφορίες Πληρωμής",
    body:["Δεν γίνονται online πληρωμές με κάρτα στο site.","Καθώς βρισκόμαστε σε νησί (Μυτιλήνη), οι παραγγελίες για το εξωτερικό ή εκτός νησιού πραγματοποιούνται με πληρωμή σε κάρτα εκτός του site για μεγαλύτερη ασφάλεια και αποστολή με Box Now ή όποιον άλλον τρόπο εξυπηρετεί τον πελάτη."],
    list:["Στέλνεις αίτημα παραγγελίας και επιβεβαιώνουμε μέσω μηνύματος.","Η πληρωμή γίνεται κατά την παράδοση (μετρητά ή άλλος τρόπος που θα συμφωνήσουμε).","Για αποστολές εκτός νησιού ή εξωτερικό: πληρωμή με κάρτα εκτός site για μεγαλύτερη ασφάλεια, με Box Now ή όποια άλλη προτίμηση έχει ο πελάτης."]},
@@ -273,8 +298,8 @@ var INFO_PAGES={
    body:["Solne Clothes was created in Athens by 334 Creations Studio. Graffiti lettering, skulls and messages printed front and back in small runs."],
    list:["Small-batch streetwear focused on print and fit.","Athens, Greece — reach us at codinginquires1@gmail.com."]},
   shipping:{title:"Shipping Information",
-   body:["Delivery is arranged after your order request."],
-   list:["Meet-up: free, at a place we agree on.","Box Now: +€4, pick up from a locker.","Other options (e.g. courier) by agreement over Instagram."]},
+   body:["Delivery is arranged after your order request based on the BOX NOW and ACS Courier price list."],
+   list:["Meet-up: free, at a place we agree on.","BOX NOW Locker: Greece €1.50 (Mini), €3.00 (Small), €4.00 (Medium), €8.00 (Large) + €1.00 for Greek islands.","ACS Courier Express (up to 2 kg): from €5.20 intra-city up to €13.91 to island destinations, plus ACS Smart Point (€9.00 intra / €16.00 inter-prefecture) or ACS Kiosk Xpress (€5.00 intra / €10.00 inter-prefecture).","Final shipping cost is confirmed directly when coordinating your order message."]},
   payment:{title:"Payment Information",
    body:["There are no online card payments on this site.","Because we are based on an island (Mytilene), orders abroad or outside the island are completed via card payment outside the site for added security, with delivery via Box Now or any other preference the customer chooses."],
    list:["You send an order request and we confirm by message.","Payment happens at handoff (cash or another method we agree on).","For outside the island or abroad: off-site card payment for added security, with Box Now or whatever preference the customer has."]},
@@ -288,18 +313,18 @@ var INFO_PAGES={
 };
 
 var T={
- el:{nNew:"Νέα συλλογή",nShop:"Shop",nAbout:"Το brand",nContact:"Επικοινωνία",cart:"Καλάθι",shopBy:"Αγορές ανά κατηγορία",
+ el:{nNew:"Νέα συλλογή",nShop:"Shop",nAbout:"Το brand",nContact:"Επικοινωνία",cart:"Καλάθι",shipGuideCta:"Δες τις τιμές του τιμοκαταλόγου BOX NOW ή ACS",pdfTitle:"Τιμοκατάλογος Αποστολών (BOX NOW & ACS)",pdfOpen:"Άνοιγμα PDF",shopBy:"Αγορές ανά κατηγορία",
   all:"Όλα",tee:"T-shirt",jersey:"Jersey",hoodie:"Φούτερ",acc:"Αξεσουάρ",viewAll:"Προβολή όλων",items:"προϊόντα",
-  newDrop:"Νέα συλλογή",size:"Μέγεθος",add:"Προσθήκη στο καλάθι",total:"Σύνολο",checkout:"Αποστολή αιτήματος παραγγελίας",soon:"Σύντομα",cartNote:"Δεν πραγματοποιούνται online πληρωμές. Μετά την αποστολή του αιτήματος ακολουθεί προσωπική επικοινωνία και ολοκλήρωση κατόπιν συνεννόησης.",ordTitle:"Αίτημα παραγγελίας",fName:"Όνομα",fCont:"Instagram, τηλέφωνο ή email",fDel:"Τρόπος παράδοσης",dMeet:"Συνάντηση (δωρεάν)",dBox:"Box Now (+4 €)",dOther:"Άλλο, θα συμφωνήσουμε",fNotes:"Σημειώσεις (προαιρετικά)",ordSend:"Δημιουργία μηνύματος",ordDone:"Το μήνυμα είναι έτοιμο. Στείλ’ το με ένα από τα παρακάτω και θα σου απαντήσω για να κλείσουμε.",viaIG:"Αποστολή στο Instagram",viaMail:"Αποστολή με email",copied:"Αντιγράφηκε στο πρόχειρο.",delFee:"Box Now: +4 €",keep:"Συνέχεια αγορών",
+  newDrop:"Νέα συλλογή",size:"Μέγεθος",add:"Προσθήκη στο καλάθι",total:"Σύνολο",checkout:"Αποστολή αιτήματος παραγγελίας",soon:"Σύντομα",cartNote:"Δες τις τιμές του τιμοκαταλόγου BOX NOW ή ACS, επίλεξε στο γραπτό μήνυμα την επιλογή που θέλεις και θα κανονίσω την τελική χρέωση και θα σε ενημερώσω.",ordTitle:"Αίτημα παραγγελίας",fName:"Όνομα",fCont:"Instagram, τηλέφωνο ή email",fDel:"Επιλογή αποστολής (BOX NOW ή ACS)",dMeet:"Συνάντηση (δωρεάν)",dBox:"BOX NOW Locker (βάσει τιμοκαταλόγου)",dAcs:"ACS Courier (βάσει τιμοκαταλόγου)",dOther:"Άλλο, θα συμφωνήσουμε",fNotes:"Σημειώσεις / Σημείο BOX NOW ή ACS (προαιρετικά)",ordSend:"Δημιουργία μηνύματος",ordDone:"Το μήνυμα είναι έτοιμο. Στείλ’ το με ένα από τα παρακάτω και θα κανονίσω την τελική χρέωση αποστολής και θα σε ενημερώσω.",viaIG:"Αποστολή στο Instagram",viaMail:"Αποστολή με email",copied:"Αντιγράφηκε στο πρόχειρο.",keep:"Συνέχεια αγορών",
   empty:"Το καλάθι σου είναι άδειο.",remove:"Αφαίρεση",close:"Κλείσιμο",prev:"Προηγούμενη διαφάνεια",next:"Επόμενη διαφάνεια",pause:"Παύση",play:"Έναρξη",
   aboutH:"Streetwear από την Ελλάδα",about1:"Το streetwear brand Solne δημιουργήθηκε στην Ελλάδα (Αθήνα). graffiti, κρανία και μηνύματα τυπωμένα μπροστά και πίσω, σε μικρές παραγωγές.",about2:"Κάθε κομμάτι έχει τη δική του ιστορία και διαβάζεται καλύτερα όταν το φοράς.",
   fAddr:"Αθήνα, Ελλάδα",fTouch:"Επικοινωνία",fContact:"Επικοινωνήστε μαζί μας",fStore:"Τοποθεσία",fInfo:"Πληροφορίες",fAbout:"Η Εταιρία",fShip:"Πληροφορίες Αποστολής",fPay:"Πληροφορίες Πληρωμής",fRet:"Ανταλλαγές - Επιστροφές",fPriv:"Πολιτική απορρήτου - GDPR",
   nlTxt:"Εγγραφείτε για τα τελευταία νέα και drops.",nlBtn:"Εγγραφή",nlPh:"Το email σου",nlOk:"Ευχαριστούμε, είσαι μέσα.",nlDup:"Αυτό το email είναι ήδη εγγεγραμμένο.",nlErr:"Σφάλμα εγγραφής. Δοκίμασε ξανά.",fFollow:"Ακολουθήστε μας",
   cookie:"Χρησιμοποιώντας αυτόν τον ιστότοπο, αποδέχεστε ότι χρησιμοποιούμε cookies.",ok:"Κατάλαβα",
   co:"Το checkout δεν έχει συνδεθεί ακόμα. Συνδέστε Stripe, Shopify ή φόρμα παραγγελίας."},
- en:{nNew:"New drop",nShop:"Shop",nAbout:"About",nContact:"Contact",cart:"Cart",shopBy:"Shop by category",
+ en:{nNew:"New drop",nShop:"Shop",nAbout:"About",nContact:"Contact",cart:"Cart",shipGuideCta:"See BOX NOW or ACS price list",pdfTitle:"Shipping & Delivery Price List (BOX NOW & ACS)",pdfOpen:"Open PDF",shopBy:"Shop by category",
   all:"All",tee:"T-shirts",jersey:"Jerseys",hoodie:"Hoodies",acc:"Accessories",viewAll:"View all",items:"products",
-  newDrop:"New drop",size:"Size",add:"Add to cart",total:"Total",checkout:"Send order request",soon:"Coming soon",cartNote:"No online payments are processed on this site. Once your request is sent, fulfillment is arranged by direct coordination.",ordTitle:"Order request",fName:"Name",fCont:"Instagram, phone or email",fDel:"Delivery",dMeet:"Meet-up (free)",dBox:"Box Now (+€4)",dOther:"Other, we'll agree",fNotes:"Notes (optional)",ordSend:"Create message",ordDone:"Your message is ready. Send it with one of the options below and I'll reply to confirm.",viaIG:"Send on Instagram",viaMail:"Send by email",copied:"Copied to clipboard.",delFee:"Box Now: +€4",keep:"Continue shopping",
+  newDrop:"New drop",size:"Size",add:"Add to cart",total:"Total",checkout:"Send order request",soon:"Coming soon",cartNote:"Check the BOX NOW or ACS price list, pick your preferred option in the message, and I will arrange the final shipping charge and update you.",ordTitle:"Order request",fName:"Name",fCont:"Instagram, phone or email",fDel:"Delivery choice (BOX NOW or ACS)",dMeet:"Meet-up (free)",dBox:"BOX NOW Locker (per price list)",dAcs:"ACS Courier (per price list)",dOther:"Other, we'll agree",fNotes:"Notes / BOX NOW or ACS point (optional)",ordSend:"Create message",ordDone:"Your message is ready. Send it via one of the options below and I will confirm the final shipping total and update you.",viaIG:"Send on Instagram",viaMail:"Send by email",copied:"Copied to clipboard.",keep:"Continue shopping",
   empty:"Your cart is empty.",remove:"Remove",close:"Close",prev:"Previous slide",next:"Next slide",pause:"Pause",play:"Play",
   aboutH:"Streetwear from Greece",about1:"The streetwear brand Solne was created in Greece (Athens). Graffiti, skulls and messages printed front and back, in small runs.",about2:"Every piece has its own story, and it reads best when you wear it.",
   fAddr:"Athens, Greece",fTouch:"Get in touch",fContact:"Contact us",fStore:"Location",fInfo:"Information",fAbout:"About us",fShip:"Shipping information",fPay:"Payment information",fRet:"Returns & exchanges",fPriv:"Privacy policy - GDPR",
@@ -410,6 +435,16 @@ function openInfo(key){
  $("#ov").classList.add("open");
  m.scrollTop=0;
 }
+/* shipping PDF modal */
+function openShipPdf(){
+ closeAll();
+ var pm=$("#pdfModal"),fr=$("#pdfFrame");
+ if(!fr.getAttribute("src"))fr.setAttribute("src",SOLNE_SHIPPING_PDF);
+ $("#pdfDownload").setAttribute("href",SOLNE_SHIPPING_PDF);
+ $("#pdfClose").setAttribute("aria-label",t("close"));
+ pm.classList.add("open");
+ $("#ov").classList.add("open");
+}
 function renderCart(){
  var Ls=$("#lines");Ls.innerHTML="";var tt=0;
  if(!cart.length)Ls.appendChild(el("div","empty",t("empty")));
@@ -423,6 +458,7 @@ function closeAll(){
  activeInfoKey=null;
  $("#modal").classList.remove("open");
  $("#infoModal").classList.remove("open");
+ $("#pdfModal").classList.remove("open");
  $("#drawer").classList.remove("open");
  $("#ov").classList.remove("open");
 }
@@ -433,9 +469,10 @@ var SOLNE_ORDER_EMAIL="codinginquires1@gmail.com";
 var SOLNE_ORDER_ENDPOINT=""; /* optional: Cloudflare Worker URL that emails you the order */
 function orderText(f){
  var tt=0,lines=cart.map(function(c){var p=P[c.i];tt+=p.pr;return "- "+p.n+" ("+c.s+") "+eur(p.pr)});
- var del=f.del.value;if(del===t("dBox"))tt+=4;
- return ["SOLNE order request",lines.join("\n"),"Total: "+eur(tt)+(del===t("dBox")?" (incl. Box Now)":""),
-  "Name: "+f.nm.value.trim(),"Contact: "+f.ct.value.trim(),"Delivery: "+del,
+ var del=f.del.value;
+ var shipNote=del===t("dMeet")?"":(L==="el"?" (+ μεταφορικά βάσει τιμοκαταλόγου)":" (+ shipping per price list)");
+ return ["SOLNE order request",lines.join("\n"),"Items subtotal: "+eur(tt)+shipNote,
+  "Name: "+f.nm.value.trim(),"Contact: "+f.ct.value.trim(),"Delivery choice: "+del,
   f.nt.value.trim()?"Notes: "+f.nt.value.trim():""].filter(Boolean).join("\n")}
 function copyText(txt){
  try{if(navigator.clipboard&&navigator.clipboard.writeText){return navigator.clipboard.writeText(txt).then(function(){return true},function(){return false})}}catch(e){}
@@ -445,11 +482,16 @@ function openOrder(){
  var m=$("#infoModal");m.innerHTML="";
  var x=el("button","x","×");x.setAttribute("aria-label",t("close"));x.onclick=closeAll;m.appendChild(x);
  m.appendChild(el("h2","",t("ordTitle")));
+ var guideBtn=el("button","ship-guide-link",t("shipGuideCta"));
+ guideBtn.type="button";
+ guideBtn.style.marginBottom="8px";
+ guideBtn.onclick=openShipPdf;
+ m.appendChild(guideBtn);
  var f=el("form","ordform");
  function field(lbl,node){var w=el("label","",lbl);w.appendChild(node);f.appendChild(w)}
  var nm=el("input");nm.name="nm";nm.required=true;nm.autocomplete="name";field(t("fName"),nm);
  var ct=el("input");ct.name="ct";ct.required=true;field(t("fCont"),ct);
- var del=el("select");del.name="del";[t("dMeet"),t("dBox"),t("dOther")].forEach(function(o){var op=el("option","",o);op.value=o;del.appendChild(op)});field(t("fDel"),del);
+ var del=el("select");del.name="del";[t("dMeet"),t("dBox"),t("dAcs"),t("dOther")].forEach(function(o){var op=el("option","",o);op.value=o;del.appendChild(op)});field(t("fDel"),del);
  var nt=el("textarea");nt.name="nt";nt.rows=3;field(t("fNotes"),nt);
  var go=el("button","add",t("ordSend"));go.type="submit";f.appendChild(go);
  f.onsubmit=function(e){
@@ -529,6 +571,7 @@ $$("[data-f]").forEach(function(a){a.onclick=function(){setFilter("all")}});
 $$("[data-info]").forEach(function(b){b.onclick=function(){openInfo(b.dataset.info)}});
 $$("#nav a").forEach(function(a){a.addEventListener("click",function(){$("#nav").classList.remove("open");$("#burger").setAttribute("aria-expanded","false")})});
 $("#cartOpen").onclick=openCart;$("#cartClose").onclick=closeAll;$("#ov").onclick=closeAll;
+$("#openShipPdf").onclick=openShipPdf;$("#pdfClose").onclick=closeAll;
 $("#checkout").onclick=function(){if(cart.length)openOrder()};
 $("#burger").onclick=function(){var n=$("#nav"),o=n.classList.toggle("open");this.setAttribute("aria-expanded",o)};
 $("#nl").onsubmit=function(e){
