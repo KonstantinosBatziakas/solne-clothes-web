@@ -161,6 +161,16 @@ footer form button{background:#fff;color:#222;padding:0 18px;font-weight:700;min
 }
 
 @media (prefers-reduced-motion:reduce){*{transition:none!important}html{scroll-behavior:auto}}
+
+.cartnote{font-size:12px;color:var(--mute);margin:0 0 10px}
+.ordform{display:grid;gap:14px;margin-top:16px}
+.ordform label{display:grid;gap:6px;font-weight:600;font-size:12px;letter-spacing:.06em;text-transform:uppercase}
+.ordform input,.ordform select,.ordform textarea,.ordtxt{width:100%;border:1px solid var(--line);background:var(--bg);color:var(--ink);padding:11px 12px;font:inherit;text-transform:none;letter-spacing:0;font-weight:400;border-radius:0}
+.ordtxt{margin:6px 0 14px;resize:none}
+.ordbtn{display:block;text-align:center;margin-top:10px}
+.ordbtn.alt{background:transparent;color:var(--ink);border:1px solid var(--ink)}
+.ordst{color:var(--mute);margin-top:12px;font-size:12px}
+.add:disabled:hover{background:var(--ink);color:#fff}
 </style>
 </head>
 <body>
@@ -226,6 +236,7 @@ footer form button{background:#fff;color:#222;padding:0 18px;font-weight:700;min
   <h2 data-i="cart"></h2>
   <div class="lines" id="lines"></div>
   <div class="tot"><span data-i="total"></span><span id="total">0,00 €</span></div>
+  <p class="cartnote" data-i="cartNote"></p>
   <button class="add" id="checkout" data-i="checkout"></button>
   <button style="margin-top:12px;text-decoration:underline" id="cartClose" data-i="keep"></button>
 </aside>
@@ -233,9 +244,9 @@ footer form button{background:#fff;color:#222;padding:0 18px;font-weight:700;min
 
 <script>
 /* NEWSLETTER CONFIG (Cloudflare Workers + KV + Resend):
-   1. Points to Cloudflare Worker ct25098 endpoint.
-   2. Keep RESEND_API_KEY in Cloudflare Worker Secrets (Settings -> Variables and Secrets) — NEVER put Resend API keys in HTML.
-   3. When SOLNE_NEWSLETTER_ENDPOINT is empty, signups queue locally in localStorage ("solne-nl-queue"). */
+1. Points to Cloudflare Worker ct25098 endpoint.
+2. Keep RESEND_API_KEY in Cloudflare Worker Secrets (Settings -> Variables and Secrets) — NEVER put Resend API keys in HTML.
+3. When SOLNE_NEWSLETTER_ENDPOINT is empty, signups queue locally in localStorage ("solne-nl-queue"). */
 var SOLNE_NEWSLETTER_ENDPOINT = "https://solne-newsletter-api.ct25098.workers.dev/api/newsletter/subscribe";
 var SOLNE_SENDER_EMAIL = "codinginquires1@gmail.com";
 
@@ -245,11 +256,11 @@ var INFO_PAGES={
    body:["Το streetwear brand Solne δημιουργήθηκε στην Αθήνα από το 334 Creations Studio. Graffiti lettering, κρανία και μηνύματα τυπωμένα μπροστά και πίσω, σε περιορισμένες παραγωγές."],
    list:["Μικρά runs με έμφαση στο print και τη γραμμή.","Αθήνα, Ελλάδα — επικοινωνία στο codinginquires1@gmail.com."]},
   shipping:{title:"Πληροφορίες Αποστολής",
-   body:["Οι παραγγελίες ετοιμάζονται σε 1–3 εργάσιμες ημέρες και αποστέλλονται σε όλη την Ελλάδα."],
-   list:["Αποστολή με courier στην Ελλάδα (εκτιμώμενος χρόνος παράδοσης 2–4 εργάσιμες).","Tracking number μόλις φύγει το δέμα.","Για αποστολές εκτός Ελλάδας επικοινωνήστε στο codinginquires1@gmail.com."]},
+   body:["Η παράδοση συμφωνείται μετά το αίτημα παραγγελίας σου."],
+   list:["Συνάντηση: δωρεάν, σε σημείο που συμφωνούμε.","Box Now: +4 €, παραλαβή από locker.","Άλλος τρόπος (π.χ. courier) κατόπιν συνεννόησης στο Instagram."]},
   payment:{title:"Πληροφορίες Πληρωμής",
-   body:["Όλες οι τιμές στο κατάστημα περιλαμβάνουν ΦΠΑ."],
-   list:["Πληρωμή με κάρτα / online checkout μόλις συνδεθεί ο πάροχος πληρωμών.","Για άμεση κράτηση κομματιού μπορείτε να επικοινωνήσετε στο codinginquires1@gmail.com."]},
+   body:["Δεν γίνονται online πληρωμές με κάρτα στο site."],
+   list:["Στέλνεις αίτημα παραγγελίας και επιβεβαιώνουμε μέσω μηνύματος.","Η πληρωμή γίνεται κατά την παράδοση (μετρητά ή άλλος τρόπος που θα συμφωνήσουμε)."]},
   returns:{title:"Ανταλλαγές - Επιστροφές",
    body:["Δέχεστε αλλαγή μεγέθους ή επιστροφή εντός 14 ημερών από την παραλαβή."],
    list:["Το προϊόν πρέπει να είναι αφόρετο, άπλυτο και στην αρχική του κατάσταση με όλα τα ταμπελάκια.","Τα έξοδα επιστροφής επιβαρύνουν τον αποστολέα εκτός αν πρόκειται για ελαττωματικό κομμάτι."]},
@@ -262,11 +273,11 @@ var INFO_PAGES={
    body:["Solne Clothes was created in Athens by 334 Creations Studio. Graffiti lettering, skulls and messages printed front and back in small runs."],
    list:["Small-batch streetwear focused on print and fit.","Athens, Greece — reach us at codinginquires1@gmail.com."]},
   shipping:{title:"Shipping Information",
-   body:["Orders are prepared within 1–3 business days and shipped across Greece."],
-   list:["Courier delivery across Greece (estimated 2–4 business days).","Tracking details provided once dispatched.","For international shipping inquiries, contact codinginquires1@gmail.com."]},
+   body:["Delivery is arranged after your order request."],
+   list:["Meet-up: free, at a place we agree on.","Box Now: +€4, pick up from a locker.","Other options (e.g. courier) by agreement over Instagram."]},
   payment:{title:"Payment Information",
-   body:["All listed prices include VAT."],
-   list:["Card / online checkout once the payment gateway is connected.","For direct piece reservations, email codinginquires1@gmail.com."]},
+   body:["There are no online card payments on this site."],
+   list:["You send an order request and we confirm by message.","Payment happens at handoff (cash or another method we agree on)."]},
   returns:{title:"Returns & Exchanges",
    body:["Size exchanges or returns are accepted within 14 days of delivery."],
    list:["Items must be unworn, unwashed, and in original condition with tags intact.","Return shipping is covered by the sender unless the item arrived defective."]},
@@ -279,7 +290,7 @@ var INFO_PAGES={
 var T={
  el:{nNew:"Νέα συλλογή",nShop:"Shop",nAbout:"Το brand",nContact:"Επικοινωνία",cart:"Καλάθι",shopBy:"Αγορές ανά κατηγορία",
   all:"Όλα",tee:"T-shirt",jersey:"Jersey",hoodie:"Φούτερ",acc:"Αξεσουάρ",viewAll:"Προβολή όλων",items:"προϊόντα",
-  newDrop:"Νέα συλλογή",size:"Μέγεθος",add:"Προσθήκη στο καλάθι",total:"Σύνολο",checkout:"Ολοκλήρωση παραγγελίας",keep:"Συνέχεια αγορών",
+  newDrop:"Νέα συλλογή",size:"Μέγεθος",add:"Προσθήκη στο καλάθι",total:"Σύνολο",checkout:"Αποστολή αιτήματος παραγγελίας",soon:"Σύντομα",cartNote:"Δεν γίνονται online πληρωμές. Στέλνεις αίτημα και συμφωνούμε παράδοση και πληρωμή στο χέρι.",ordTitle:"Αίτημα παραγγελίας",fName:"Όνομα",fCont:"Instagram, τηλέφωνο ή email",fDel:"Τρόπος παράδοσης",dMeet:"Συνάντηση (δωρεάν)",dBox:"Box Now (+4 €)",dOther:"Άλλο, θα συμφωνήσουμε",fNotes:"Σημειώσεις (προαιρετικά)",ordSend:"Δημιουργία μηνύματος",ordDone:"Το μήνυμα είναι έτοιμο. Στείλ’ το με ένα από τα παρακάτω και θα σου απαντήσω για να κλείσουμε.",viaIG:"Αποστολή στο Instagram",viaMail:"Αποστολή με email",copied:"Αντιγράφηκε στο πρόχειρο.",delFee:"Box Now: +4 €",keep:"Συνέχεια αγορών",
   empty:"Το καλάθι σου είναι άδειο.",remove:"Αφαίρεση",close:"Κλείσιμο",prev:"Προηγούμενη διαφάνεια",next:"Επόμενη διαφάνεια",pause:"Παύση",play:"Έναρξη",
   aboutH:"Streetwear από την Ελλάδα",about1:"Το streetwear brand Solne δημιουργήθηκε στην Ελλάδα (Αθήνα). graffiti, κρανία και μηνύματα τυπωμένα μπροστά και πίσω, σε μικρές παραγωγές.",about2:"Κάθε κομμάτι έχει τη δική του ιστορία και διαβάζεται καλύτερα όταν το φοράς.",
   fAddr:"Αθήνα, Ελλάδα",fTouch:"Επικοινωνία",fContact:"Επικοινωνήστε μαζί μας",fStore:"Τοποθεσία",fInfo:"Πληροφορίες",fAbout:"Η Εταιρία",fShip:"Πληροφορίες Αποστολής",fPay:"Πληροφορίες Πληρωμής",fRet:"Ανταλλαγές - Επιστροφές",fPriv:"Πολιτική απορρήτου - GDPR",
@@ -288,7 +299,7 @@ var T={
   co:"Το checkout δεν έχει συνδεθεί ακόμα. Συνδέστε Stripe, Shopify ή φόρμα παραγγελίας."},
  en:{nNew:"New drop",nShop:"Shop",nAbout:"About",nContact:"Contact",cart:"Cart",shopBy:"Shop by category",
   all:"All",tee:"T-shirts",jersey:"Jerseys",hoodie:"Hoodies",acc:"Accessories",viewAll:"View all",items:"products",
-  newDrop:"New drop",size:"Size",add:"Add to cart",total:"Total",checkout:"Checkout",keep:"Continue shopping",
+  newDrop:"New drop",size:"Size",add:"Add to cart",total:"Total",checkout:"Send order request",soon:"Coming soon",cartNote:"No online payments. You send a request, then we agree on delivery and pay at handoff.",ordTitle:"Order request",fName:"Name",fCont:"Instagram, phone or email",fDel:"Delivery",dMeet:"Meet-up (free)",dBox:"Box Now (+€4)",dOther:"Other, we'll agree",fNotes:"Notes (optional)",ordSend:"Create message",ordDone:"Your message is ready. Send it with one of the options below and I'll reply to confirm.",viaIG:"Send on Instagram",viaMail:"Send by email",copied:"Copied to clipboard.",delFee:"Box Now: +€4",keep:"Continue shopping",
   empty:"Your cart is empty.",remove:"Remove",close:"Close",prev:"Previous slide",next:"Next slide",pause:"Pause",play:"Play",
   aboutH:"Streetwear from Greece",about1:"The streetwear brand Solne was created in Greece (Athens). Graffiti, skulls and messages printed front and back, in small runs.",about2:"Every piece has its own story, and it reads best when you wear it.",
   fAddr:"Athens, Greece",fTouch:"Get in touch",fContact:"Contact us",fStore:"Location",fInfo:"Information",fAbout:"About us",fShip:"Shipping information",fPay:"Payment information",fRet:"Returns & exchanges",fPriv:"Privacy policy - GDPR",
@@ -303,17 +314,17 @@ var P=[
   im:[["Wear The Silence Tee closeup.JPG","1SJMtZTqRPY6jcGW5lJ9do8B-xUW4mct2"],["Wear the silence non closeup.png","1ZeWJw7aeYbDCHUaC97IbDcgvtr3hMctg"]]},
  {n:"SOLNE GRAFFITI TEE",c:"tee",pr:35,d:["graffiti lettering μπροστά και πίσω, φτιαγμένο για τον δρόμο.","Graffiti lettering front and back, made for the street."],
   im:[["Solne graffiti front closeup.png","1ngdCHQW5CwUvuRgev_OLJOTUWGQKkTUp"],["solne graffiti front non closeup.png","1CAa7rmdZE1xpa4YCqQpXWOBprk_3O91x"],["Solne graffiti closeup back.JPG","1A2depgXXH5rlY1CTWCUUJ2Npld2uo-95"],["solne graffiti non closeup back.PNG","1E8bM2pNumah5GZgzjzcTLh-trhV0pKXJ"]]},
- {n:"SKULL ZEBRA PRINT TEE",c:"tee",pr:38,tag:["Νέο","New"],d:["Κρανίο με zebra print μπροστά και πίσω.","Skull with zebra print front and back."],
+ {n:"SKULL ZEBRA POLO",c:"tee",pr:38,soon:1,d:["Polo με κρανίο και zebra print μπροστά και πίσω.","Polo with skull and zebra print front and back."],
   im:[["Skull Zebra Print Solne Clothes closeup front.png","1WBQD6fJAqlSXQMtJjwQ5_7Dyl_JgrkX-"],["skull non closeup zebra print front.png","1nELG0fluEdCqrJBv519k__LYO8bqOFaT"],["Skull Zebra Print Back closeup.JPG","1l43t_ZB_IQliaVEayTT4nTuIqGbOpJaC"],["skull zebra graffiti non closeup back.PNG","1OuASu5Lpvj-6-Nh0Nx0em31qiZfxLn4x"]]},
  {n:"Η ΠΟΛΗ ΤΩΝ ΠΑΓΩΜΕΝΩΝ ΟΝΕΙΡΩΝ TEE",c:"tee",pr:38,d:["Η πόλη των παγωμένων ονείρων σε print μπροστά και πίσω.","The city of frozen dreams, printed front and back."],
   im:[["Η Πολη Των Παγωμενων Ονειρων Front Print closeup.png","1lVGZO4o_ZWAy57vNGJtiuvvkqnep-9GV"],["Η πολη των παγωμενων ονειρων print front non closeup.png","1aqWWIJZ2VaT5Pk-CGIQJ4CyNqt_pdFnV"],["Η Πόλη Των Παγωμένων Ονείρων Back Print closeup.JPG","1Q8yHpXCGr0ddcSODUCj2thSQbo4x8IbX"],["print back η πολη των παγωμενων ονειρων non closeup.png","1WHkzxF_-2LWd0uCIO_XkOZ_7f5YrHhDq"]]},
  {n:"SOUL SOCIETY TEE",c:"tee",pr:35,d:["Soul Society, ένα από τα πρώτα σχέδια του brand.","Soul Society, one of the brand's first designs."],
   im:[["Soul Society closeup.JPG","1p5Adp3e3eVq60p4s7NQYHznwGywNLl2N"]]},
- {n:"SOLNE JERSEY",c:"jersey",pr:45,d:["Jersey με print μπροστά και πίσω. Αθλητική γραμμή, street στυλ.","Jersey with front and back print. Sporty cut, street style."],
+ {n:"SOLNE JERSEY",c:"jersey",pr:45,soon:1,d:["Jersey με print μπροστά και πίσω. Αθλητική γραμμή, street στυλ.","Jersey with front and back print. Sporty cut, street style."],
   im:[["Jersey Front Print.JPG","1FmyKe5kWlHY45mOY0Gi-3HwEQC5rmsJz"],["jeresy non closeup front.PNG","1lfo_teAMVAq0U-VkJfGHIgQqutLg03_m"],["Jersey Back Print.JPG","1DTeKvhX4SDAAGc3FvtrMO4OwScCDFpbO"],["jersey non closeup back.PNG","17T8_2s7oGRn2fxBN8Al0xxNJv7KDqmzI"]]},
  {n:"SOLNE STREETWEAR HOODIE",c:"hoodie",pr:60,d:["Το hoodie της Solne με μπροστινό print. Ζεστό και βαρύ.","The Solne hoodie with front print. Warm and heavy."],
   im:[["Solne Streetwear Hoodie Front closeup.JPG","13MXI7DoQSf2ZID7Xb_zjt8iDNCjTKBSP"]]},
- {n:"THIRTYFOUR TRUCKER CAP",c:"acc",pr:25,one:1,d:["Trucker cap με το thirtyfour. Ρυθμιζόμενο μέγεθος.","Trucker cap with thirtyfour. Adjustable size."],
+ {n:"THIRTYFOUR TRUCKER CAP",c:"acc",pr:25,soon:1,one:1,d:["Trucker cap με το thirtyfour. Ρυθμιζόμενο μέγεθος.","Trucker cap with thirtyfour. Adjustable size."],
   im:[["trucker cap thirtyfour without closeup just non pov.png","18GIsYgoWXrkq6wUZsFVEKe3rqDrLA1D8"]]}
 ];
 var CATS=["tee","jersey","hoodie","acc"];
@@ -355,7 +366,7 @@ function buildGrid(){
   var b=el("button","card"),ph=el("div","ph");
   if(p.tag)ph.appendChild(el("span","tag",p.tag[L==="el"?0:1]));
   ph.appendChild(img(p.im[0],p.n,true));if(p.im[1])ph.appendChild(img(p.im[1],p.n,true));
-  b.appendChild(ph);b.appendChild(el("h3","",p.n));b.appendChild(el("p","",eur(p.pr)));
+  b.appendChild(ph);b.appendChild(el("h3","",p.n));b.appendChild(el("p","",p.soon?t("soon"):eur(p.pr)));
   b.appendChild(el("small","",p.one?"One size":"S M L XL"));
   b.onclick=function(){openP(i)};g.appendChild(b)});
  $("#shopTitle").textContent=t(filter);$("#num").textContent=n+" "+t("items")}
@@ -370,12 +381,14 @@ function openP(i){
  m.innerHTML="";
  var x=el("button","x","×");x.setAttribute("aria-label",t("close"));x.onclick=closeAll;m.appendChild(x);
  var gal=el("div","gal");p.im.forEach(function(a){var d=el("div");d.appendChild(img(a,p.n));gal.appendChild(d)});m.appendChild(gal);
- var inf=el("div","info");inf.appendChild(el("h2","",p.n));inf.appendChild(el("div","pr",eur(p.pr)));inf.appendChild(el("p","",p.d[L==="el"?0:1]));
+ var inf=el("div","info");inf.appendChild(el("h2","",p.n));inf.appendChild(el("div","pr",p.soon?t("soon"):eur(p.pr)));inf.appendChild(el("p","",p.d[L==="el"?0:1]));
  inf.appendChild(el("b","",t("size")));
  var S=el("div","sizes");sz.forEach(function(s){var b=el("button","",s);b.setAttribute("aria-pressed",s===pick);
   b.onclick=function(){pick=s;S.querySelectorAll("button").forEach(function(o){o.setAttribute("aria-pressed",o===b)})};S.appendChild(b)});
  inf.appendChild(S);
- var add=el("button","add",t("add"));add.onclick=function(){cart.push({i:i,s:pick});renderCart();closeAll();openCart()};
+ var add;
+ if(p.soon){add=el("button","add",t("soon"));add.disabled=true;add.style.opacity=".5";add.style.cursor="default";add.style.background="var(--ink)"}
+ else{add=el("button","add",t("add"));add.onclick=function(){cart.push({i:i,s:pick});renderCart();closeAll();openCart()}}
  inf.appendChild(add);m.appendChild(inf);m.classList.add("open");$("#ov").classList.add("open");m.scrollTop=0}
 /* info modal (ΠΛΗΡΟΦΟΡΙΕΣ) */
 function openInfo(key){
@@ -413,6 +426,54 @@ function closeAll(){
  $("#drawer").classList.remove("open");
  $("#ov").classList.remove("open");
 }
+
+/* order request (no online payment: message by Instagram or email) */
+var SOLNE_IG="dreams_dont_pay_rent";
+var SOLNE_ORDER_EMAIL="codinginquires1@gmail.com";
+var SOLNE_ORDER_ENDPOINT=""; /* optional: Cloudflare Worker URL that emails you the order */
+function orderText(f){
+ var tt=0,lines=cart.map(function(c){var p=P[c.i];tt+=p.pr;return "- "+p.n+" ("+c.s+") "+eur(p.pr)});
+ var del=f.del.value;if(del===t("dBox"))tt+=4;
+ return ["SOLNE order request",lines.join("\n"),"Total: "+eur(tt)+(del===t("dBox")?" (incl. Box Now)":""),
+  "Name: "+f.nm.value.trim(),"Contact: "+f.ct.value.trim(),"Delivery: "+del,
+  f.nt.value.trim()?"Notes: "+f.nt.value.trim():""].filter(Boolean).join("\n")}
+function copyText(txt){
+ try{if(navigator.clipboard&&navigator.clipboard.writeText){return navigator.clipboard.writeText(txt).then(function(){return true},function(){return false})}}catch(e){}
+ return Promise.resolve(false)}
+function openOrder(){
+ closeAll();
+ var m=$("#infoModal");m.innerHTML="";
+ var x=el("button","x","×");x.setAttribute("aria-label",t("close"));x.onclick=closeAll;m.appendChild(x);
+ m.appendChild(el("h2","",t("ordTitle")));
+ var f=el("form","ordform");
+ function field(lbl,node){var w=el("label","",lbl);w.appendChild(node);f.appendChild(w)}
+ var nm=el("input");nm.name="nm";nm.required=true;nm.autocomplete="name";field(t("fName"),nm);
+ var ct=el("input");ct.name="ct";ct.required=true;field(t("fCont"),ct);
+ var del=el("select");del.name="del";[t("dMeet"),t("dBox"),t("dOther")].forEach(function(o){var op=el("option","",o);op.value=o;del.appendChild(op)});field(t("fDel"),del);
+ var nt=el("textarea");nt.name="nt";nt.rows=3;field(t("fNotes"),nt);
+ var go=el("button","add",t("ordSend"));go.type="submit";f.appendChild(go);
+ f.onsubmit=function(e){
+  e.preventDefault();
+  var txt=orderText(f);
+  var done=function(){showOrderDone(m,txt)};
+  if(SOLNE_ORDER_ENDPOINT){
+   fetch(SOLNE_ORDER_ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({text:txt,lang:L})}).then(done,done)
+  }else done()};
+ m.appendChild(f);
+ m.classList.add("open");$("#ov").classList.add("open");m.scrollTop=0}
+function showOrderDone(m,txt){
+ m.innerHTML="";
+ var x=el("button","x","×");x.setAttribute("aria-label",t("close"));x.onclick=closeAll;m.appendChild(x);
+ m.appendChild(el("h2","",t("ordTitle")));
+ m.appendChild(el("p","",t("ordDone")));
+ var ta=el("textarea","ordtxt");ta.readOnly=true;ta.rows=Math.min(12,txt.split("\n").length+1);ta.value=txt;m.appendChild(ta);
+ var st=el("p","ordst");
+ copyText(txt).then(function(ok){if(ok)st.textContent=t("copied")});
+ var ig=el("a","add ordbtn",t("viaIG"));ig.href="https://ig.me/m/"+SOLNE_IG;ig.target="_blank";ig.rel="noopener noreferrer";
+ ig.onclick=function(){copyText(txt)};
+ var ml=el("a","add ordbtn alt",t("viaMail"));ml.href="mailto:"+SOLNE_ORDER_EMAIL+"?subject="+encodeURIComponent("Solne order request")+"&body="+encodeURIComponent(txt);
+ m.appendChild(ig);m.appendChild(ml);m.appendChild(st)}
+
 /* newsletter client module (Cloudflare Workers + KV + Resend) */
 var SolneNewsletter = {
   storageKey: "solne-nl-queue",
@@ -468,7 +529,7 @@ $$("[data-f]").forEach(function(a){a.onclick=function(){setFilter("all")}});
 $$("[data-info]").forEach(function(b){b.onclick=function(){openInfo(b.dataset.info)}});
 $$("#nav a").forEach(function(a){a.addEventListener("click",function(){$("#nav").classList.remove("open");$("#burger").setAttribute("aria-expanded","false")})});
 $("#cartOpen").onclick=openCart;$("#cartClose").onclick=closeAll;$("#ov").onclick=closeAll;
-$("#checkout").onclick=function(){alert(t("co"))};
+$("#checkout").onclick=function(){if(cart.length)openOrder()};
 $("#burger").onclick=function(){var n=$("#nav"),o=n.classList.toggle("open");this.setAttribute("aria-expanded",o)};
 $("#nl").onsubmit=function(e){
   e.preventDefault();
