@@ -471,11 +471,9 @@ function orderText(f){
  var tt=0,lines=cart.map(function(c){var p=P[c.i];tt+=p.pr;return "- "+p.n+" ("+c.s+") "+eur(p.pr)});
  var del=f.del.value;
  var shipNote=del===t("dMeet")?"":(L==="el"?" (+ μεταφορικά βάσει τιμοκαταλόγου)":" (+ shipping per price list)");
- return ["SOLNE order request",lines.join("
-"),"Items subtotal: "+eur(tt)+shipNote,
+ return ["SOLNE order request",lines.join("\n"),"Items subtotal: "+eur(tt)+shipNote,
   "Name: "+f.nm.value.trim(),"Contact: "+f.ct.value.trim(),"Delivery choice: "+del,
-  f.nt.value.trim()?"Notes: "+f.nt.value.trim():""].filter(Boolean).join("
-")}
+  f.nt.value.trim()?"Notes: "+f.nt.value.trim():""].filter(Boolean).join("\n")}
 function copyText(txt){
  try{if(navigator.clipboard&&navigator.clipboard.writeText){return navigator.clipboard.writeText(txt).then(function(){return true},function(){return false})}}catch(e){}
  return Promise.resolve(false)}
@@ -510,13 +508,12 @@ function showOrderDone(m,txt){
  var x=el("button","x","×");x.setAttribute("aria-label",t("close"));x.onclick=closeAll;m.appendChild(x);
  m.appendChild(el("h2","",t("ordTitle")));
  m.appendChild(el("p","",t("ordDone")));
- var ta=el("textarea","ordtxt");ta.readOnly=true;ta.rows=Math.min(12,txt.split("
-").length+1);ta.value=txt;m.appendChild(ta);
+ var ta=el("textarea","ordtxt");ta.readOnly=true;ta.rows=Math.min(12,txt.split("\n").length+1);ta.value=txt;m.appendChild(ta);
  var st=el("p","ordst");
  copyText(txt).then(function(ok){if(ok)st.textContent=t("copied")});
- var ig=el("a","add ordbtn",t("viaIG"));ig.href="https://www.instagram.com/"+SOLNE_IG+"/";ig.target="_blank";ig.rel="noopener noreferrer";
+ var ig=el("a","add ordbtn",t("viaIG"));ig.href="https://ig.me/m/"+SOLNE_IG;ig.target="_blank";ig.rel="noopener noreferrer";
  ig.onclick=function(){copyText(txt)};
- var ml=el("a","add ordbtn alt",t("viaMail"));ml.href="mailto:"+SOLNE_ORDER_EMAIL+"?subject="+encodeURIComponent("Solne order request")+"&body="+encodeURIComponent(txt);ml.target="_blank";ml.rel="noopener noreferrer";
+ var ml=el("a","add ordbtn alt",t("viaMail"));ml.href="mailto:"+SOLNE_ORDER_EMAIL+"?subject="+encodeURIComponent("Solne order request")+"&body="+encodeURIComponent(txt);
  m.appendChild(ig);m.appendChild(ml);m.appendChild(st)}
 
 /* newsletter client module (Cloudflare Workers + KV + Resend) */
