@@ -511,9 +511,9 @@ function showOrderDone(m,txt){
  var ta=el("textarea","ordtxt");ta.readOnly=true;ta.rows=Math.min(12,txt.split("\n").length+1);ta.value=txt;m.appendChild(ta);
  var st=el("p","ordst");
  copyText(txt).then(function(ok){if(ok)st.textContent=t("copied")});
- var ig=el("a","add ordbtn",t("viaIG"));ig.href="https://ig.me/m/"+SOLNE_IG;ig.target="_blank";ig.rel="noopener noreferrer";
+ var ig=el("a","add ordbtn",t("viaIG"));ig.href="https://www.instagram.com/"+SOLNE_IG+"/";ig.target="_blank";ig.rel="noopener noreferrer";
  ig.onclick=function(){copyText(txt)};
- var ml=el("a","add ordbtn alt",t("viaMail"));ml.href="mailto:"+SOLNE_ORDER_EMAIL+"?subject="+encodeURIComponent("Solne order request")+"&body="+encodeURIComponent(txt);
+ var ml=el("a","add ordbtn alt",t("viaMail"));ml.href="mailto:"+SOLNE_ORDER_EMAIL+"?subject="+encodeURIComponent("Solne order request")+"&body="+encodeURIComponent(txt);ml.target="_blank";ml.rel="noopener noreferrer";
  m.appendChild(ig);m.appendChild(ml);m.appendChild(st)}
 
 /* newsletter client module (Cloudflare Workers + KV + Resend) */
