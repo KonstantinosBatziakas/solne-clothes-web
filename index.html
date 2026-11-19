@@ -273,7 +273,8 @@ footer form button{background:#fff;color:#222;padding:0 18px;font-weight:700;min
 3. When SOLNE_NEWSLETTER_ENDPOINT is empty, signups queue locally in localStorage ("solne-nl-queue"). */
 var SOLNE_NEWSLETTER_ENDPOINT = "https://solne-newsletter-api.ct25098.workers.dev/api/newsletter/subscribe";
 var SOLNE_SENDER_EMAIL = "codinginquires1@gmail.com";
-var SOLNE_SHIPPING_PDF = "SOLNE_Shipping_Delivery_Guide.pdf";
+var SOLNE_SHIPPING_PDFS = {el: "SOLNE_Shipping_Delivery_Guide.pdf", en: "SOLNE_Shipping_Delivery_Guide_English.pdf"};
+function shipPdfUrl(){return SOLNE_SHIPPING_PDFS[L] || SOLNE_SHIPPING_PDFS.el}
 
 var INFO_PAGES={
  el:{
@@ -438,9 +439,9 @@ function openInfo(key){
 /* shipping PDF modal */
 function openShipPdf(){
  closeAll();
- var pm=$("#pdfModal"),fr=$("#pdfFrame");
- if(!fr.getAttribute("src"))fr.setAttribute("src",SOLNE_SHIPPING_PDF);
- $("#pdfDownload").setAttribute("href",SOLNE_SHIPPING_PDF);
+ var pm=$("#pdfModal"),fr=$("#pdfFrame"),url=shipPdfUrl();
+ if(fr.getAttribute("src")!==url)fr.setAttribute("src",url);
+ $("#pdfDownload").setAttribute("href",url);
  $("#pdfClose").setAttribute("aria-label",t("close"));
  pm.classList.add("open");
  $("#ov").classList.add("open");
@@ -562,6 +563,8 @@ function setLang(l){L=l;try{localStorage.setItem("solne-lang",l)}catch(e){}
  $$("[data-i]").forEach(function(e){e.textContent=t(e.dataset.i)});
  $$("[data-l]").forEach(function(b){b.setAttribute("aria-pressed",b.dataset.l===l)});
  $("#nlIn").placeholder=t("nlPh");
+ $("#pdfDownload").setAttribute("href",shipPdfUrl());
+ if($("#pdfFrame").getAttribute("src"))$("#pdfFrame").setAttribute("src",shipPdfUrl());
  var keepKey=activeInfoKey;
  buildShow();buildTiles();buildGrid();buildDD();renderCart();closeAll();
  if(keepKey)openInfo(keepKey);
